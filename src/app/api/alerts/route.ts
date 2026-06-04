@@ -58,7 +58,7 @@ export async function GET(request: Request) {
       const indexData = market.data.find((item: any) => item.symbol === cfg.symbol);
       if (!indexData) continue;
 
-      const pointsChange = indexData.price - indexData.open;
+      const pointsChange = indexData.change;
       const isUp = pointsChange >= 0;
       const absChange = Math.abs(pointsChange);
 
