@@ -21,6 +21,7 @@ export default function NewsMarketAlerts() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeSource, setActiveSource] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [foOnly, setFoOnly] = useState(false);
 
   const categories = [
     { label: "All News", value: "all" },
@@ -92,7 +93,10 @@ export default function NewsMarketAlerts() {
     // 2. Source Filter
     const matchesSource = activeSource === "all" || item.source === activeSource;
 
-    return matchesSearch && matchesSource;
+    // 3. F&O Filter (hides sideways news when active)
+    const matchesFo = !foOnly || (item.foAnalysis && item.foAnalysis.bias !== "Neutral / Sideways");
+
+    return matchesSearch && matchesSource && matchesFo;
   });
 
   // Extract high urgency emergency alerts
@@ -163,9 +167,23 @@ export default function NewsMarketAlerts() {
           <Search className="absolute left-3 h-4 w-4 text-muted-foreground" />
         </div>
 
-        {/* Counter */}
-        <div className="text-xs text-muted-foreground font-mono font-bold">
-          Found {filteredNews.length} articles
+        {/* F&O Toggle & Counter */}
+        <div className="flex items-center gap-4 self-end sm:self-auto flex-wrap">
+          <button
+            onClick={() => setFoOnly(!foOnly)}
+            className={`rounded-xl px-3 py-1.5 text-xs font-extrabold flex items-center gap-1.5 cursor-pointer transition-all border ${
+              foOnly
+                ? "bg-indigo-600 border-indigo-600 text-white shadow-sm glow-indigo"
+                : "bg-card border-border hover:bg-secondary text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <span>⚡ F&O Actionable Only</span>
+            {foOnly && <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />}
+          </button>
+
+          <div className="text-xs text-muted-foreground font-mono font-bold">
+            Found {filteredNews.length} articles
+          </div>
         </div>
       </div>
 
@@ -240,6 +258,11 @@ export default function NewsMarketAlerts() {
                       <span className={`rounded border px-2 py-0.5 text-[9px] font-extrabold font-mono uppercase tracking-wider ${getSourceBadgeStyles(article.source)}`}>
                         {article.source.replace(" Markets", "")}
                       </span>
+                      {article.foAnalysis && article.foAnalysis.bias !== "Neutral / Sideways" && (
+                        <span className="rounded bg-indigo-600 text-white text-[9px] font-extrabold uppercase px-2 py-0.5 font-mono flex items-center gap-0.5 glow-indigo/40 animate-pulse">
+                          ⚡ F&O ACTIVE
+                        </span>
+                      )}
                       {article.urgency === "high" && (
                         <span className="rounded bg-rose-500/10 text-rose-500 text-[9px] font-extrabold uppercase px-2 py-0.5 font-mono">
                           URGENT
