@@ -2,6 +2,13 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+interface FoAnalysis {
+  tradeType: "Intraday" | "Positional (1-2 Days)" | "Both";
+  bias: "Bullish" | "Bearish" | "Neutral / High Volatility" | "Neutral / Sideways";
+  suggestedStrategy: string;
+  riskLevel: "High" | "Medium" | "Low";
+}
+
 interface NewsItem {
   id: string;
   title: string;
@@ -14,6 +21,7 @@ interface NewsItem {
   link?: string;
   affectedSectors?: string[];
   affectedAssets?: string[];
+  foAnalysis?: FoAnalysis;
 }
 
 const FEEDS = [
@@ -129,6 +137,59 @@ function analyzeImpact(title: string, summary: string): { affectedSectors: strin
   return { affectedSectors, affectedAssets };
 }
 
+function analyzeFoImpact(title: string, summary: string, impactScore: number, category: string): FoAnalysis {
+  const lowerText = (title + " " + summary).toLowerCase();
+  
+  // 1. Determine Bias & Option Strategy
+  let bias: "Bullish" | "Bearish" | "Neutral / High Volatility" | "Neutral / Sideways" = "Neutral / Sideways";
+  let suggestedStrategy = "Short Strangle / Iron Condor";
+
+  // Check for high volatility events
+  if (lowerText.match(/\b(sebi|rbi|fed|rate hike|repo|interest rate|regulatory|vix|margin|breakout|policy decision|inflation|cpi|crude price surge|sudden drop)\b/i)) {
+    bias = "Neutral / High Volatility";
+    suggestedStrategy = "Long Straddle / Strangle";
+  } else if (impactScore >= 5) {
+    bias = "Bullish";
+    suggestedStrategy = "Long Calls / Bull Call Spreads";
+  } else if (impactScore <= -3) {
+    bias = "Bearish";
+    suggestedStrategy = "Long Puts / Bear Put Spreads";
+  }
+
+  // 2. Determine Trade Horizon (tradeType)
+  let tradeType: "Intraday" | "Positional (1-2 Days)" | "Both" = "Both";
+  
+  // Intraday keywords: fast moves, opening cues, block deals, current session, intraday
+  const isIntraday = lowerText.match(/\b(gap up|gap down|opening cues|opening|block deal|results today|earnings today|intraday|session open|spikes|plunges|sudden|surge today)\b/i);
+  // Positional keywords: structural trends, policy changes, fed, inventory, multi-day, weekly
+  const isPositional = lowerText.match(/\b(fed rate|rbi decision|monetary policy|weekly trend|inventory data|crude breakout|possession|holding|positional|quarterly outlook|guidance|forecast|1-2 days|swing)\b/i);
+
+  if (isIntraday && isPositional) {
+    tradeType = "Both";
+  } else if (isIntraday) {
+    tradeType = "Intraday";
+  } else if (isPositional) {
+    tradeType = "Positional (1-2 Days)";
+  } else {
+    // Default by category: India/Global are often both, Commodities/Currency are often positional
+    if (category === "commodities" || category === "currency") {
+      tradeType = "Positional (1-2 Days)";
+    } else {
+      tradeType = "Intraday";
+    }
+  }
+
+  // 3. Determine Risk Level
+  let riskLevel: "High" | "Medium" | "Low" = "Low";
+  if (bias === "Neutral / High Volatility" || lowerText.match(/\b(critical|sebi|regulatory|fed|rbi|earnings|block deal|collapse|rally)\b/i)) {
+    riskLevel = "High";
+  } else if (impactScore !== 2) {
+    riskLevel = "Medium";
+  }
+
+  return { tradeType, bias, suggestedStrategy, riskLevel };
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -226,6 +287,7 @@ export async function GET(request: Request) {
         const urgency = Math.abs(impactScore) > 5 ? "high" : Math.abs(impactScore) > 3 ? "medium" : "low";
 
         const { affectedSectors, affectedAssets } = analyzeImpact(title, summary);
+        const foAnalysis = analyzeFoImpact(title, summary, impactScore, category);
 
         allArticles.push({
           id: `live-${idCounter++}`,
@@ -239,6 +301,7 @@ export async function GET(request: Request) {
           link,
           affectedSectors,
           affectedAssets,
+          foAnalysis,
         });
 
         sourceArticleCount++;

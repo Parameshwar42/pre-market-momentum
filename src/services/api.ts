@@ -24,6 +24,13 @@ export interface MarketSentiment {
   vixChangePercent: number;
 }
 
+export interface FoAnalysis {
+  tradeType: "Intraday" | "Positional (1-2 Days)" | "Both";
+  bias: "Bullish" | "Bearish" | "Neutral / High Volatility" | "Neutral / Sideways";
+  suggestedStrategy: string;
+  riskLevel: "High" | "Medium" | "Low";
+}
+
 export interface NewsItem {
   id: string;
   title: string;
@@ -36,6 +43,7 @@ export interface NewsItem {
   link?: string;
   affectedSectors?: string[];
   affectedAssets?: string[];
+  foAnalysis?: FoAnalysis;
 }
 
 export interface PreMarketSignal {
@@ -836,7 +844,13 @@ const MOCK_NEWS: NewsItem[] = [
     summary: "Indian equities are poised for a gap-up opening as GIFT Nifty trades near 23,480. Strong domestic macroeconomic parameters and supportive index flows bolster indices.",
     impactScore: 8,
     affectedSectors: ["Banking & Finance", "Macroeconomy"],
-    affectedAssets: ["Nifty 50", "Nifty Bank"]
+    affectedAssets: ["Nifty 50", "Nifty Bank"],
+    foAnalysis: {
+      tradeType: "Intraday",
+      bias: "Bullish",
+      suggestedStrategy: "Long Calls / Bull Call Spreads",
+      riskLevel: "High"
+    }
   },
   {
     id: "news-2",
@@ -848,7 +862,13 @@ const MOCK_NEWS: NewsItem[] = [
     summary: "Crude futures dropped by more than 1% following API inventory numbers showing higher crude storage builds. Lower crude import expenses are structurally bullish for Indian corporate margins.",
     impactScore: 5,
     affectedSectors: ["Energy & Power", "Macroeconomy"],
-    affectedAssets: ["Crude Oil"]
+    affectedAssets: ["Crude Oil"],
+    foAnalysis: {
+      tradeType: "Positional (1-2 Days)",
+      bias: "Bullish",
+      suggestedStrategy: "Bull Call Spreads",
+      riskLevel: "Medium"
+    }
   },
   {
     id: "news-3",
@@ -860,7 +880,13 @@ const MOCK_NEWS: NewsItem[] = [
     summary: "Indian ADR counters closed higher, with HDFC Bank gaining 1.69% and ICICI Bank rising 1.38%. Technology major Infosys also added 0.82%, indicating interest in domestic large-caps.",
     impactScore: 7,
     affectedSectors: ["Banking & Finance", "Information Technology"],
-    affectedAssets: ["HDFC Bank", "Infosys", "ICICI Bank"]
+    affectedAssets: ["HDFC Bank", "Infosys", "ICICI Bank"],
+    foAnalysis: {
+      tradeType: "Both",
+      bias: "Bullish",
+      suggestedStrategy: "Long Calls / Bull Call Spreads",
+      riskLevel: "Medium"
+    }
   },
   {
     id: "news-4",
@@ -872,7 +898,13 @@ const MOCK_NEWS: NewsItem[] = [
     summary: "The Indian Rupee edged up 9 paise in early trade to 83.42, tracking positive domestic equities and weak US dollar index, supporting overall banking liquidity.",
     impactScore: 4,
     affectedSectors: ["Banking & Finance", "Macroeconomy"],
-    affectedAssets: ["USD/INR"]
+    affectedAssets: ["USD/INR"],
+    foAnalysis: {
+      tradeType: "Intraday",
+      bias: "Bullish",
+      suggestedStrategy: "Bull Put Spreads (Short Puts)",
+      riskLevel: "Low"
+    }
   },
   {
     id: "news-6",
@@ -884,7 +916,13 @@ const MOCK_NEWS: NewsItem[] = [
     summary: "The market regulator is considering higher contract sizes and stricter margin norms for index options, potentially reducing speculative volumes in Nifty and Bank Nifty contracts.",
     impactScore: -6,
     affectedSectors: ["Banking & Finance", "Macroeconomy"],
-    affectedAssets: ["Nifty 50", "Nifty Bank"]
+    affectedAssets: ["Nifty 50", "Nifty Bank"],
+    foAnalysis: {
+      tradeType: "Positional (1-2 Days)",
+      bias: "Neutral / High Volatility",
+      suggestedStrategy: "Long Straddle / Strangle (Vol Spike)",
+      riskLevel: "High"
+    }
   },
   {
     id: "news-7",
@@ -896,7 +934,13 @@ const MOCK_NEWS: NewsItem[] = [
     summary: "Safe-haven gold gained 0.81% as the US 10-year Treasury yield slipped below 4.3% following cooling inflation data, renewing interest in non-yielding yellow metals.",
     impactScore: 3,
     affectedSectors: ["Metals & Mining", "Macroeconomy"],
-    affectedAssets: ["Bullion"]
+    affectedAssets: ["Bullion"],
+    foAnalysis: {
+      tradeType: "Positional (1-2 Days)",
+      bias: "Bullish",
+      suggestedStrategy: "Bull Call Spreads",
+      riskLevel: "Medium"
+    }
   }
 ];
 

@@ -311,6 +311,43 @@ export default function NewsMarketAlerts() {
                     </div>
                   </div>
                 )}
+                {/* F&O Insight Box */}
+                {article.foAnalysis && (
+                  <div className="mt-3 pt-3 border-t border-border/20 space-y-2 bg-slate-500/5 dark:bg-slate-500/10 rounded-xl p-3.5">
+                    <div className="text-[10px] font-extrabold text-indigo-500 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-1">
+                      ⚡ F&O Actionable Insight (Intraday & Swing)
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[10px]">
+                      <div className="bg-card border border-border/40 rounded-xl p-2.5 space-y-0.5">
+                        <span className="text-muted-foreground block text-[9px] uppercase font-bold tracking-tight">Trading Bias</span>
+                        <span className={`font-black tracking-tight ${
+                          article.foAnalysis.bias === "Bullish" ? "text-emerald-500" :
+                          article.foAnalysis.bias === "Bearish" ? "text-rose-500" :
+                          article.foAnalysis.bias === "Neutral / High Volatility" ? "text-amber-500" : "text-slate-400"
+                        }`}>
+                          {article.foAnalysis.bias}
+                        </span>
+                      </div>
+                      <div className="bg-card border border-border/40 rounded-xl p-2.5 space-y-0.5">
+                        <span className="text-muted-foreground block text-[9px] uppercase font-bold tracking-tight">Horizon</span>
+                        <span className="font-extrabold text-foreground tracking-tight">{article.foAnalysis.tradeType}</span>
+                      </div>
+                      <div className="bg-card border border-border/40 rounded-xl p-2.5 space-y-0.5">
+                        <span className="text-muted-foreground block text-[9px] uppercase font-bold tracking-tight">Risk Level</span>
+                        <span className={`font-extrabold tracking-tight ${
+                          article.foAnalysis.riskLevel === "High" ? "text-rose-500" :
+                          article.foAnalysis.riskLevel === "Medium" ? "text-amber-500" : "text-emerald-500"
+                        }`}>
+                          {article.foAnalysis.riskLevel} Risk
+                        </span>
+                      </div>
+                      <div className="bg-card border border-border/40 rounded-xl p-2.5 space-y-0.5">
+                        <span className="text-muted-foreground block text-[9px] uppercase font-bold tracking-tight">F&O Strategy</span>
+                        <span className="font-extrabold text-indigo-500 dark:text-indigo-400 tracking-tight">{article.foAnalysis.suggestedStrategy}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-3 flex items-center justify-between text-[10px] text-muted-foreground font-semibold">
                   <span>Source: {article.source}</span>
