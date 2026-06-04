@@ -157,6 +157,77 @@ export default function HomeDashboard() {
         </div>
       </div>
 
+      {/* Quick Access CTAs (Millennial/Gen-Z Focused Psychology) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* CTA 1: Live Market Terminal */}
+        <Link 
+          href="/live"
+          className="group relative rounded-3xl border border-border bg-gradient-to-br from-emerald-500/5 to-secondary/30 p-6 overflow-hidden transition-all duration-300 hover:border-emerald-500/40 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/5 active:scale-98 cursor-pointer"
+        >
+          {/* Glowing background blur effect */}
+          <div className="absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/15 transition-all duration-500" />
+          
+          <div className="flex items-start justify-between gap-4 relative z-10">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                </span>
+                Live Terminal
+              </div>
+              <h3 className="text-xl font-extrabold text-foreground tracking-tight group-hover:text-emerald-500 transition-colors duration-200">
+                Live Market Desk
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-sm">
+                Monitor live Indian stock indices, US arbitrage spreads, and domestic MCX commodities with dynamic charting.
+              </p>
+            </div>
+            
+            <div className="h-10 w-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-sm">
+              <TrendingUp className="h-5 w-5" />
+            </div>
+          </div>
+          
+          <div className="mt-6 flex items-center gap-1 text-xs font-bold text-emerald-500 group-hover:underline relative z-10">
+            <span>Explore Live Dashboard</span>
+            <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* CTA 2: News & F&O Bulletins */}
+        <Link 
+          href="/news"
+          className="group relative rounded-3xl border border-border bg-gradient-to-br from-indigo-500/5 to-secondary/30 p-6 overflow-hidden transition-all duration-300 hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/5 active:scale-98 cursor-pointer"
+        >
+          {/* Glowing background blur effect */}
+          <div className="absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/15 transition-all duration-500" />
+          
+          <div className="flex items-start justify-between gap-4 relative z-10">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-500/10 text-[10px] font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest leading-none">
+                🔔 F&O Signal Active
+              </div>
+              <h3 className="text-xl font-extrabold text-foreground tracking-tight group-hover:text-indigo-500 transition-colors duration-200">
+                News & F&O Bulletins
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-sm">
+                Get real-time news bulletins, target impact analysis, and actionable intraday & swing options trade biases.
+              </p>
+            </div>
+            
+            <div className="h-10 w-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 flex items-center justify-center shrink-0 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-300 shadow-sm">
+              <Activity className="h-5 w-5" />
+            </div>
+          </div>
+          
+          <div className="mt-6 flex items-center gap-1 text-xs font-bold text-indigo-500 group-hover:underline relative z-10">
+            <span>View Actionable Insights</span>
+            <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+      </div>
+
       {/* Global cue counts ticker row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-card border border-border/70 rounded-2xl p-4 flex flex-col justify-between">
