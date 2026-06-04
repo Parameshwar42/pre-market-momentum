@@ -20,9 +20,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://pre-market-momentum.vercel.app"),
   title: "Pre-Market Momentum | Real-Time Market Updates & Opening Signals",
   description: "Live trackers for GIFT NIFTY, INR/USD currency, Crude Oil, Indian ADRs, and Commodities. Proprietary Pre-Market India opening signal with confidence score calculations.",
   keywords: ["GIFT Nifty", "USD INR", "Crude Oil Brent", "Indian ADRs", "Market Sentiment", "Pre-Market Opening Signal", "NSE Nifty 50"],
+  openGraph: {
+    title: "Pre-Market Momentum | Live Indian Open Signals",
+    description: "Get real-time market updates, GIFT NIFTY predictions, live Indian ADR premiums, and MCX commodities arbitrage tracking.",
+    url: "https://pre-market-momentum.vercel.app",
+    siteName: "Pre-Market Momentum",
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/og_preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Pre-Market Momentum | Live Indian Open Signals",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pre-Market Momentum | Live Indian Open Signals",
+    description: "Get real-time market updates, GIFT NIFTY predictions, live Indian ADR premiums, and MCX commodities arbitrage tracking.",
+    images: ["/og_preview.png"],
+  },
 };
 
 export default function RootLayout({
