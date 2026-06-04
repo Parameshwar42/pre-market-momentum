@@ -1,11 +1,15 @@
 "use client";
 
 import React from "react";
-import { getMarketSentiment } from "@/services/api";
-import { Gauge, ShieldAlert, ArrowUpRight, ArrowDownRight, Activity } from "lucide-react";
+import { getMarketSentiment, MarketItem } from "@/services/api";
+import { Gauge, ArrowUpRight, ArrowDownRight } from "lucide-react";
 
-export default function SentimentIndicator() {
-  const sentiment = getMarketSentiment();
+interface SentimentIndicatorProps {
+  marketItems: MarketItem[];
+}
+
+export default function SentimentIndicator({ marketItems }: SentimentIndicatorProps) {
+  const sentiment = getMarketSentiment(marketItems);
   
   const total = sentiment.advances + sentiment.declines + sentiment.unchanged;
   const advancePercent = (sentiment.advances / total) * 100;
@@ -88,21 +92,35 @@ export default function SentimentIndicator() {
             <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">India VIX</span>
             <div className="flex items-baseline justify-between mt-1">
               <span className="text-lg font-black font-mono text-foreground leading-none">{sentiment.vix.toFixed(2)}</span>
-              <span className="text-[10px] font-bold font-mono text-emerald-500 inline-flex items-center">
-                <ArrowDownRight className="h-3 w-3" />
-                {sentiment.vixChangePercent}%
+              <span className={`text-[10px] font-bold font-mono inline-flex items-center gap-0.5 ${
+                sentiment.vixChangePercent <= 0 ? "text-emerald-500" : "text-rose-500"
+              }`}>
+                {sentiment.vixChangePercent <= 0 ? <ArrowDownRight className="h-3.5 w-3.5" /> : <ArrowUpRight className="h-3.5 w-3.5" />}
+                {sentiment.vixChangePercent >= 0 ? "+" : ""}{sentiment.vixChangePercent.toFixed(2)}%
               </span>
             </div>
-            <span className="text-[9px] text-muted-foreground leading-normal mt-1 block">Volatility remains low, supportive for bulls.</span>
+            <span className="text-[9px] text-muted-foreground leading-normal mt-1 block">
+              {sentiment.vix > 18 ? "Volatility is elevated, exercise caution." : "Volatility remains low, supportive for bulls."}
+            </span>
           </div>
 
           <div className="rounded-xl bg-muted/40 border border-border/40 p-3 flex flex-col justify-between">
             <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">NIFTY Option PCR</span>
             <div className="flex items-baseline justify-between mt-1">
               <span className="text-lg font-black font-mono text-foreground leading-none">{sentiment.niftyPcr.toFixed(2)}</span>
-              <span className="text-[10px] font-bold text-emerald-500 leading-none">Neutral-Bullish</span>
+              <span className={`text-[10px] font-bold leading-none ${
+                sentiment.niftyPcr >= 1.15 ? "text-emerald-500" :
+                sentiment.niftyPcr >= 0.95 ? "text-indigo-500 dark:text-indigo-400" : "text-rose-500"
+              }`}>
+                {sentiment.niftyPcr >= 1.15 ? "Bullish" :
+                 sentiment.niftyPcr >= 0.95 ? "Neutral" : "Bearish"}
+              </span>
             </div>
-            <span className="text-[9px] text-muted-foreground leading-normal mt-1 block">Put-Call ratio reflects firm support below.</span>
+            <span className="text-[9px] text-muted-foreground leading-normal mt-1 block">
+              {sentiment.niftyPcr >= 1.15 ? "Heavy Put writing indicates a strong floor." :
+               sentiment.niftyPcr >= 0.95 ? "Put-Call ratio reflects balanced neutral positioning." :
+               "Call writing resistance capping Nifty upside."}
+            </span>
           </div>
         </div>
       </div>

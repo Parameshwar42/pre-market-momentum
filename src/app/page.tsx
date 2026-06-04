@@ -204,7 +204,7 @@ export default function HomeDashboard() {
           <PreMarketSignal signalData={signalData} />
         </div>
         <div className="lg:col-span-4">
-          <SentimentIndicator />
+          <SentimentIndicator marketItems={marketItems} />
         </div>
       </div>
 

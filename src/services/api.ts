@@ -816,16 +816,65 @@ export function calculatePreMarketSignal(data: MarketItem[]): PreMarketSignal {
   };
 }
 
-export function getMarketSentiment(): MarketSentiment {
+export function getMarketSentiment(marketItems?: MarketItem[]): MarketSentiment {
+  if (!marketItems || marketItems.length === 0) {
+    return {
+      score: 64,
+      label: "Greed",
+      advances: 1240,
+      declines: 812,
+      unchanged: 104,
+      niftyPcr: 1.12,
+      vix: 13.45,
+      vixChangePercent: -2.35
+    };
+  }
+
+  const nifty = marketItems.find((m) => m.symbol === "NIFTY50");
+  const vixItem = marketItems.find((m) => m.symbol === "INDIA_VIX");
+  
+  const niftyChange = nifty ? nifty.changePercent : 0.0;
+  const vixValue = vixItem ? vixItem.price : 14.5;
+  const vixChange = vixItem ? vixItem.changePercent : 0.0;
+
+  // 1. Advances / Declines simulation based on actual breadth
+  const totalTracked = marketItems.length;
+  const positiveTracked = marketItems.filter(item => item.change >= 0).length;
+  const positiveRatio = totalTracked > 0 ? positiveTracked / totalTracked : 0.5;
+
+  const unchanged = 104;
+  const advances = Math.max(150, Math.min(1850, Math.round(positiveRatio * 2000)));
+  const declines = Math.max(150, 2100 - advances - unchanged);
+
+  // 2. Put-Call Ratio (PCR) based on Nifty performance
+  let niftyPcr = 1.0 + (niftyChange / 100) * 15.0; // scale up percentage
+  niftyPcr = Math.max(0.65, Math.min(1.55, niftyPcr));
+
+  // 3. Fear & Greed Index Score
+  // VIX baseline is 15. Below 15 indicates greed, above indicates fear.
+  const vixFactor = (15 - vixValue) * 2.5; 
+  const niftyFactor = (niftyChange / 100) * 180.0; // scale up percentage
+  const breadthFactor = (positiveRatio - 0.5) * 30;
+
+  let score = Math.round(50 + niftyFactor + vixFactor + breadthFactor);
+  score = Math.max(5, Math.min(95, score));
+
+  let label: "Extreme Fear" | "Fear" | "Neutral" | "Greed" | "Extreme Greed" = "Neutral";
+  if (score < 25) label = "Extreme Fear";
+  else if (score < 45) label = "Fear";
+  else if (score < 55) label = "Neutral";
+  else if (score < 75) label = "Greed";
+  else label = "Extreme Greed";
+
   return {
-    score: 64,
-    label: "Greed",
-    advances: 1240,
-    declines: 812,
-    unchanged: 104,
-    niftyPcr: 1.12,
-    vix: 13.45,
-    vixChangePercent: -2.35
+    score,
+    label,
+    advances,
+    declines,
+    unchanged,
+    niftyPcr,
+    vix: vixValue,
+    vixChangePercent: vixChange
   };
 }
 
