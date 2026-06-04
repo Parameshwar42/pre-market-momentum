@@ -9,7 +9,7 @@ export default function AboutPanel() {
       {/* Title */}
       <div className="text-center space-y-3">
         <h1 className="text-3xl font-black text-foreground tracking-tight sm:text-4xl">
-          About Antigravity Finance
+          Pre-Market Pulse
         </h1>
         <p className="text-sm text-muted-foreground max-w-xl mx-auto">
           An advanced analytics dashboard calculating domestic opening momentum from global asset cues.
@@ -114,7 +114,7 @@ export default function AboutPanel() {
           <strong>Market data is for informational purposes only. This website does not provide investment advice.</strong>
         </p>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          The indicators, calculators, pre-market signals, and arbitrage analysis tools presented on Antigravity Finance are powered by mock calculations and simulated data feeds, and are meant for educational demonstration purposes only. Trading in equity markets, derivatives, currencies, and commodities involves high risk. We strongly recommend consult a certified financial planner and doing independent due diligence before committing any capital. Under no circumstances shall Antigravity Finance be held liable for any financial losses or damages resulting from trading activities based on the content of this platform.
+          The indicators, calculators, pre-market signals, and arbitrage analysis tools presented on Pre-Market Pulse are powered by mock calculations and simulated data feeds, and are meant for educational demonstration purposes only. Trading in equity markets, derivatives, currencies, and commodities involves high risk. We strongly recommend consult a certified financial planner and doing independent due diligence before committing any capital. Under no circumstances shall Pre-Market Pulse be held liable for any financial losses or damages resulting from trading activities based on the content of this platform.
         </p>
       </div>
     </div>

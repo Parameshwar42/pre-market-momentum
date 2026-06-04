@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 
     // 1. Handle Instant Test Message Trigger
     if (isTest) {
-      const testBody = `🚨 *NIFTY 50 ALERTS - TEST* 🚨\n\nCongratulation! Your automated WhatsApp market alerts from *Antigravity Finance* are now successfully connected and active!`;
+      const testBody = `🚨 *NIFTY 50 ALERTS - TEST* 🚨\n\nCongratulation! Your automated WhatsApp market alerts from *Pre-Market Pulse* are now successfully connected and active!`;
       
       await client.messages.create({
         body: testBody,
