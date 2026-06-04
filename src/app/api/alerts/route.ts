@@ -48,8 +48,8 @@ export async function GET(request: Request) {
 
     const INDEX_CONFIGS = [
       { symbol: "NIFTY50", name: "NIFTY 50", thresholds: [100, 150, 200, 250, 300, 350] },
-      { symbol: "BANKNIFTY", name: "BANK NIFTY", thresholds: [300, 500, 800, 1000, 1200] },
-      { symbol: "SENSEX", name: "SENSEX", thresholds: [300, 500, 800, 1000, 1200, 1500] }
+      { symbol: "BANKNIFTY", name: "BANK NIFTY", thresholds: [150, 300, 450, 600, 750, 900, 1050, 1200] },
+      { symbol: "SENSEX", name: "SENSEX", thresholds: [150, 300, 450, 600, 750, 900, 1050, 1200] }
     ];
 
     let alertsSentList = [];
