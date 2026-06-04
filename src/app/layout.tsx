@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://pre-market-momentum.vercel.app"),
+  metadataBase: new URL("https://premarketmomentum.com"),
   title: "Pre-Market Momentum | Real-Time Market Updates & Opening Signals",
   description: "Live trackers for GIFT NIFTY, INR/USD currency, Crude Oil, Indian ADRs, and Commodities. Proprietary Pre-Market India opening signal with confidence score calculations.",
   keywords: ["GIFT Nifty", "USD INR", "Crude Oil Brent", "Indian ADRs", "Market Sentiment", "Pre-Market Opening Signal", "NSE Nifty 50"],
