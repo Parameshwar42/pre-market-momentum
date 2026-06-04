@@ -46,48 +46,70 @@ export async function GET(request: Request) {
     const market = await res.json();
     if (!market.success) throw new Error(market.error || "Failed to fetch market data");
 
-    const nifty = market.data.find((item: any) => item.symbol === "NIFTY50");
-    if (!nifty) return NextResponse.json({ success: false, message: "NIFTY 50 not found in data feeds." });
+    const INDEX_CONFIGS = [
+      { symbol: "NIFTY50", name: "NIFTY 50", thresholds: [100, 150, 200, 250, 300, 350] },
+      { symbol: "BANKNIFTY", name: "BANK NIFTY", thresholds: [300, 500, 800, 1000, 1200] },
+      { symbol: "SENSEX", name: "SENSEX", thresholds: [300, 500, 800, 1000, 1200, 1500] }
+    ];
 
-    const pointsChange = nifty.price - nifty.open;
-    const thresholds = [100, 150, 200, 250, 300, 350];
+    let alertsSentList = [];
 
-    let crossedThreshold = 0;
-    for (const t of thresholds) {
-      if (pointsChange >= t) {
-        crossedThreshold = t;
+    for (const cfg of INDEX_CONFIGS) {
+      const indexData = market.data.find((item: any) => item.symbol === cfg.symbol);
+      if (!indexData) continue;
+
+      const pointsChange = indexData.price - indexData.open;
+      const isUp = pointsChange >= 0;
+      const absChange = Math.abs(pointsChange);
+
+      let crossedThreshold = 0;
+      for (const t of cfg.thresholds) {
+        if (absChange >= t) {
+          crossedThreshold = t;
+        }
+      }
+
+      if (crossedThreshold > 0) {
+        const direction = isUp ? "UP" : "DOWN";
+        const today = new Date().toISOString().split("T")[0];
+        const cacheKey = `${today}:${cfg.symbol}:${direction}:${crossedThreshold}`;
+
+        if (!triggeredThresholds.has(cacheKey)) {
+          const sign = isUp ? "+" : "-";
+          const icon = isUp ? "🚀" : "📉";
+          const trendWord = isUp ? "surged" : "dropped";
+          
+          const bodyText = `🚨 *${cfg.name} MILESTONE ALERT* 🚨\n\n${cfg.name} has ${trendWord} today! It is ${isUp ? "up" : "down"} by *${sign}${absChange.toFixed(2)} points*.\n\n• Current Price: *₹${indexData.price.toLocaleString("en-IN")}*\n• Change: *${indexData.changePercent >= 0 ? "+" : ""}${indexData.changePercent}%* (${indexData.change.toFixed(2)} pts)\n• Today's Open: ₹${indexData.open.toLocaleString("en-IN")}\n• Milestone Crossed: *${sign}${crossedThreshold} points* ${icon}`;
+
+          await client.messages.create({
+            body: bodyText,
+            from: fromNumber,
+            to: toNumber,
+          });
+
+          triggeredThresholds.add(cacheKey);
+          alertsSentList.push({
+            symbol: cfg.symbol,
+            direction,
+            threshold: crossedThreshold,
+            change: pointsChange.toFixed(2)
+          });
+        }
       }
     }
 
-    if (crossedThreshold > 0) {
-      const today = new Date().toISOString().split("T")[0];
-      const cacheKey = `${today}:${crossedThreshold}`;
-
-      if (!triggeredThresholds.has(cacheKey)) {
-        const bodyText = `🚨 *NIFTY 50 MILESTONE ALERT* 🚨\n\nNifty 50 has crossed a milestone! It is up by *${pointsChange.toFixed(2)} points* today.\n\n• Current Price: *₹${nifty.price.toLocaleString("en-IN")}*\n• Change: *${nifty.changePercent >= 0 ? "+" : ""}${nifty.changePercent}%* (${nifty.change.toFixed(2)} pts)\n• Today's Open: ₹${nifty.open.toLocaleString("en-IN")}\n• Milestone Crossed: *+${crossedThreshold} points*`;
-
-        await client.messages.create({
-          body: bodyText,
-          from: fromNumber,
-          to: toNumber,
-        });
-
-        triggeredThresholds.add(cacheKey);
-
-        return NextResponse.json({
-          success: true,
-          alertSent: true,
-          threshold: crossedThreshold,
-          pointsChange: pointsChange.toFixed(2),
-        });
-      }
+    if (alertsSentList.length > 0) {
+      return NextResponse.json({
+        success: true,
+        alertSent: true,
+        alerts: alertsSentList
+      });
     }
 
     return NextResponse.json({
       success: true,
       alertSent: false,
-      pointsChange: pointsChange.toFixed(2),
-      message: `Checked. Nifty is up by ${pointsChange.toFixed(2)} points. No milestone crossed.`,
+      message: "Checked NIFTY 50, BANK NIFTY, and SENSEX. No new milestones crossed.",
     });
   } catch (err: any) {
     console.error("Alert trigger error:", err);
