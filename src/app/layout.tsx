@@ -63,6 +63,14 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4399943882344598"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-200">
         <ThemeProvider>
           <WatchlistProvider>
@@ -75,12 +83,7 @@ export default function RootLayout({
             <Analytics />
             <CookieConsent />
             
-            {/* Google AdSense */}
-            <script
-              async
-              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4399943882344598"
-              crossOrigin="anonymous"
-            />
+
             
             {/* OneSignal Web Push Notifications */}
             <Script
