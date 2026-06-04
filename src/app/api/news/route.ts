@@ -149,7 +149,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       success: true,
-      data: filteredArticles.slice(0, 15) // Limit total items in feed to 15
+      data: filteredArticles.slice(0, 30) // Limit total items in feed to 30
     });
   } catch (e: any) {
     return NextResponse.json({

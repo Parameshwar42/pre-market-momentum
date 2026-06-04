@@ -19,6 +19,7 @@ export default function NewsMarketAlerts() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [activeSource, setActiveSource] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const categories = [
@@ -30,6 +31,29 @@ export default function NewsMarketAlerts() {
     { label: "ADR Watchlist", value: "adr" },
   ];
 
+  const sources = [
+    { label: "All Sources", value: "all" },
+    { label: "Economic Times", value: "Economic Times Markets" },
+    { label: "Yahoo Finance", value: "Yahoo Finance" },
+    { label: "Livemint", value: "Livemint Markets" },
+    { label: "Moneycontrol", value: "Moneycontrol" },
+  ];
+
+  const getSourceBadgeStyles = (source: string) => {
+    switch (source) {
+      case "Economic Times Markets":
+        return "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20";
+      case "Yahoo Finance":
+        return "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20";
+      case "Livemint Markets":
+        return "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20";
+      case "Moneycontrol":
+        return "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20";
+      default:
+        return "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20";
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     getNewsAlerts(activeCategory).then((data) => {
@@ -39,13 +63,20 @@ export default function NewsMarketAlerts() {
   }, [activeCategory]);
 
   const filteredNews = news.filter((item) => {
-    if (!searchQuery.trim()) return true;
-    const q = searchQuery.toLowerCase().trim();
-    return (
-      item.title.toLowerCase().includes(q) ||
-      item.summary.toLowerCase().includes(q) ||
-      item.source.toLowerCase().includes(q)
-    );
+    // 1. Search Query Filter
+    const matchesSearch = !searchQuery.trim() || (() => {
+      const q = searchQuery.toLowerCase().trim();
+      return (
+        item.title.toLowerCase().includes(q) ||
+        item.summary.toLowerCase().includes(q) ||
+        item.source.toLowerCase().includes(q)
+      );
+    })();
+
+    // 2. Source Filter
+    const matchesSource = activeSource === "all" || item.source === activeSource;
+
+    return matchesSearch && matchesSource;
   });
 
   // Extract high urgency emergency alerts
@@ -123,23 +154,49 @@ export default function NewsMarketAlerts() {
       </div>
 
       {/* Category selector pills */}
-      <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-2 border-b border-border/30">
-        {categories.map((cat) => {
-          const isActive = activeCategory === cat.value;
-          return (
-            <button
-              key={cat.value}
-              onClick={() => setActiveCategory(cat.value)}
-              className={`rounded-lg px-3 py-2 text-xs font-extrabold tracking-tight whitespace-nowrap cursor-pointer transition-all ${
-                isActive
-                  ? "bg-primary text-white shadow-sm"
-                  : "bg-muted/40 hover:bg-secondary text-muted-foreground hover:text-foreground border border-border/30"
-              }`}
-            >
-              {cat.label}
-            </button>
-          );
-        })}
+      <div className="space-y-1.5">
+        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block">Filter by Topic:</span>
+        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-2">
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat.value;
+            return (
+              <button
+                key={cat.value}
+                onClick={() => setActiveCategory(cat.value)}
+                className={`rounded-lg px-3 py-1.5 text-xs font-extrabold tracking-tight whitespace-nowrap cursor-pointer transition-all ${
+                  isActive
+                    ? "bg-primary text-white shadow-sm"
+                    : "bg-muted/40 hover:bg-secondary text-muted-foreground hover:text-foreground border border-border/30"
+                }`}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Source selector pills */}
+      <div className="space-y-1.5 border-b border-border/30 pb-3">
+        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block">Filter by Publisher Source:</span>
+        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-2">
+          {sources.map((src) => {
+            const isActive = activeSource === src.value;
+            return (
+              <button
+                key={src.value}
+                onClick={() => setActiveSource(src.value)}
+                className={`rounded-lg px-3 py-1.5 text-xs font-extrabold tracking-tight whitespace-nowrap cursor-pointer transition-all ${
+                  isActive
+                    ? "bg-indigo-600 dark:bg-indigo-500 text-white shadow-sm"
+                    : "bg-muted/40 hover:bg-secondary text-muted-foreground hover:text-foreground border border-border/30"
+                }`}
+              >
+                {src.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Articles Feed */}
@@ -160,9 +217,12 @@ export default function NewsMarketAlerts() {
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5">
                   <div className="space-y-1.5 flex-1">
                     {/* Badges row */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className="rounded bg-muted px-2 py-0.5 text-[9px] font-extrabold text-muted-foreground uppercase tracking-wider font-mono">
                         {article.category}
+                      </span>
+                      <span className={`rounded border px-2 py-0.5 text-[9px] font-extrabold font-mono uppercase tracking-wider ${getSourceBadgeStyles(article.source)}`}>
+                        {article.source.replace(" Markets", "")}
                       </span>
                       {article.urgency === "high" && (
                         <span className="rounded bg-rose-500/10 text-rose-500 text-[9px] font-extrabold uppercase px-2 py-0.5 font-mono">
