@@ -52,6 +52,7 @@ export async function GET(request: Request) {
       // Simple, robust regex-based XML item parser
       const itemRegex = /<item[^>]*>([\s\S]*?)<\/item>/g;
       let match;
+      let sourceArticleCount = 0;
 
       while ((match = itemRegex.exec(xmlText)) !== null) {
         const itemContent = match[1];
@@ -128,8 +129,9 @@ export async function GET(request: Request) {
           link,
         });
 
+        sourceArticleCount++;
         // Limit per feed source to avoid bloated response
-        if (idCounter > 25) break;
+        if (sourceArticleCount >= 10) break;
       }
     });
 
