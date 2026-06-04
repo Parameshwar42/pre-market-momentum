@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   title: "Pre-Market Momentum | Real-Time Market Updates & Opening Signals",
   description: "Live trackers for GIFT NIFTY, INR/USD currency, Crude Oil, Indian ADRs, and Commodities. Proprietary Pre-Market India opening signal with confidence score calculations.",
   keywords: ["GIFT Nifty", "USD INR", "Crude Oil Brent", "Indian ADRs", "Market Sentiment", "Pre-Market Opening Signal", "NSE Nifty 50"],
+  other: {
+    "google-adsense-account": "ca-pub-4399943882344598",
+  },
   openGraph: {
     title: "Pre-Market Momentum | Live Indian Open Signals",
     description: "Get real-time market updates, GIFT NIFTY predictions, live Indian ADR premiums, and MCX commodities arbitrage tracking.",
@@ -73,11 +76,10 @@ export default function RootLayout({
             <CookieConsent />
             
             {/* Google AdSense */}
-            <Script
+            <script
               async
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4399943882344598"
               crossOrigin="anonymous"
-              strategy="afterInteractive"
             />
             
             {/* OneSignal Web Push Notifications */}
