@@ -16,7 +16,9 @@ interface NewsItem {
 
 const FEEDS = [
   { url: "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", defaultSource: "Economic Times Markets" },
-  { url: "https://finance.yahoo.com/news/rss", defaultSource: "Yahoo Finance" }
+  { url: "https://finance.yahoo.com/news/rss", defaultSource: "Yahoo Finance" },
+  { url: "https://www.livemint.com/rss/markets", defaultSource: "Livemint Markets" },
+  { url: "https://news.google.com/rss/search?q=site:moneycontrol.com&hl=en-IN&gl=IN&ceid=IN:en", defaultSource: "Moneycontrol" }
 ];
 
 export async function GET(request: Request) {
