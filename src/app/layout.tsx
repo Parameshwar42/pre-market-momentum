@@ -72,6 +72,14 @@ export default function RootLayout({
             <Analytics />
             <CookieConsent />
             
+            {/* Google AdSense */}
+            <Script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4399943882344598"
+              crossOrigin="anonymous"
+              strategy="afterInteractive"
+            />
+            
             {/* OneSignal Web Push Notifications */}
             <Script
               src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
