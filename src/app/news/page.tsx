@@ -54,6 +54,22 @@ export default function NewsMarketAlerts() {
     }
   };
 
+  const getSectorEmoji = (sector: string) => {
+    switch (sector) {
+      case "Banking & Finance": return "🏦";
+      case "Information Technology": return "💻";
+      case "Automobile": return "🚗";
+      case "Metals & Mining": return "🔩";
+      case "Energy & Power": return "⚡";
+      case "FMCG": return "🛒";
+      case "Pharmaceuticals": return "💊";
+      case "Telecom": return "📞";
+      case "Infrastructure": return "🏗️";
+      case "Macroeconomy": return "🌐";
+      default: return "📊";
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     getNewsAlerts(activeCategory).then((data) => {
@@ -253,6 +269,48 @@ export default function NewsMarketAlerts() {
                 <p className="text-xs text-muted-foreground leading-relaxed mt-3 pt-3 border-t border-border/40">
                   {article.summary}
                 </p>
+
+                {/* Target Impact Analysis Area */}
+                {((article.affectedSectors && article.affectedSectors.length > 0) || (article.affectedAssets && article.affectedAssets.length > 0)) && (
+                  <div className="mt-3 pt-3 border-t border-border/20 space-y-2 bg-muted/20 dark:bg-muted/10 rounded-xl p-3">
+                    <div className="text-[10px] font-extrabold text-muted-foreground uppercase tracking-wider">
+                      🎯 Target Impact Analysis
+                    </div>
+                    <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:gap-6 flex-wrap">
+                      {article.affectedSectors && article.affectedSectors.length > 0 && (
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase">Sectors:</span>
+                          <div className="flex flex-wrap gap-1">
+                            {article.affectedSectors.map((sector) => (
+                              <span 
+                                key={sector} 
+                                className="inline-flex items-center gap-1 rounded bg-background dark:bg-card border border-border/40 px-2 py-0.5 text-[9px] font-extrabold text-foreground"
+                              >
+                                {getSectorEmoji(sector)} {sector}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {article.affectedAssets && article.affectedAssets.length > 0 && (
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase">Assets:</span>
+                          <div className="flex flex-wrap gap-1">
+                            {article.affectedAssets.map((asset) => (
+                              <span 
+                                key={asset} 
+                                className="inline-flex items-center gap-1 rounded bg-indigo-500/5 dark:bg-indigo-500/10 border border-indigo-500/15 px-2 py-0.5 text-[9px] font-extrabold text-indigo-600 dark:text-indigo-400"
+                              >
+                                📈 {asset}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-3 flex items-center justify-between text-[10px] text-muted-foreground font-semibold">
                   <span>Source: {article.source}</span>

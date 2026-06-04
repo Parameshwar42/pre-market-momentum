@@ -12,6 +12,8 @@ interface NewsItem {
   summary: string;
   impactScore: number;
   link?: string;
+  affectedSectors?: string[];
+  affectedAssets?: string[];
 }
 
 const FEEDS = [
@@ -20,6 +22,112 @@ const FEEDS = [
   { url: "https://www.livemint.com/rss/markets", defaultSource: "Livemint Markets" },
   { url: "https://news.google.com/rss/search?q=site:moneycontrol.com&hl=en-IN&gl=IN&ceid=IN:en", defaultSource: "Moneycontrol" }
 ];
+
+function analyzeImpact(title: string, summary: string): { affectedSectors: string[]; affectedAssets: string[] } {
+  const lowerText = (title + " " + summary).toLowerCase();
+  const affectedSectors: string[] = [];
+  const affectedAssets: string[] = [];
+
+  // Banking & Finance
+  if (lowerText.match(/\b(bank|banks|hdfc|icici|sbi|axis|pnb|kotak|indusind|rbi|rate hike|repo|interest rate|nbfc|financial|lending|fintech)\b/i)) {
+    affectedSectors.push("Banking & Finance");
+  }
+
+  // Information Technology (IT) - avoid pronoun 'it' collision by looking at capital or specific keywords
+  if (lowerText.includes("it sector") || lowerText.includes("it services") || lowerText.includes("it companies") || 
+      lowerText.match(/\b(tcs|infosys|wipro|hcl|tech mahindra|techm|software|semiconductor|nasdaq|digital services|accenture|cognizant)\b/i) ||
+      (title.match(/\bIT\b/) || summary.match(/\bIT\b/))) {
+    affectedSectors.push("Information Technology");
+  }
+
+  // Automobile
+  if (lowerText.match(/\b(auto|cars|auto sales|automotive|vehicle|ev|electric vehicle|tata motors|maruti|mahindra|bajaj|hero|tvs)\b/i)) {
+    affectedSectors.push("Automobile");
+  }
+
+  // Metals & Mining
+  if (lowerText.match(/\b(metal|metals|steel|iron|copper|aluminum|zinc|gold|silver|mining|tata steel|jsw|hindalco|vedanta|coal)\b/i)) {
+    affectedSectors.push("Metals & Mining");
+  }
+
+  // Energy & Power
+  if (lowerText.match(/\b(oil|crude|gas|petro|refinery|reliance|ongc|bpcl|hpcl|ntpc|power|energy|solar|hydrogen|wind power|coal india)\b/i)) {
+    affectedSectors.push("Energy & Power");
+  }
+
+  // FMCG
+  if (lowerText.match(/\b(fmcg|consumer goods|retail|supermarket|hul|itc|nestle|britannia|dabur|marico|colgate)\b/i)) {
+    affectedSectors.push("FMCG");
+  }
+
+  // Pharmaceuticals & Healthcare
+  if (lowerText.match(/\b(pharma|pharmaceuticals|drug|medicine|healthcare|hospital|vaccine|biotech|sun pharma|dr reddy|cipla|lupin)\b/i)) {
+    affectedSectors.push("Pharmaceuticals");
+  }
+
+  // Telecom
+  if (lowerText.match(/\b(telecom|telecommunication|jio|reliance jio|airtel|bharti airtel|vodafone|idea|5g|broadband)\b/i)) {
+    affectedSectors.push("Telecom");
+  }
+
+  // Infrastructure & Real Estate
+  if (lowerText.match(/\b(infra|infrastructure|construction|cement|l&t|larsen|dlf|godrej properties|real estate|realty|housing)\b/i)) {
+    affectedSectors.push("Infrastructure");
+  }
+
+  // Assets and Indices mapping
+  if (lowerText.includes("nifty 50") || lowerText.includes("nifty")) {
+    affectedAssets.push("Nifty 50");
+  }
+  if (lowerText.includes("bank nifty") || lowerText.includes("nifty bank") || (lowerText.includes("nifty") && lowerText.includes("bank"))) {
+    affectedAssets.push("Nifty Bank");
+  }
+  if (lowerText.includes("sensex")) {
+    affectedAssets.push("Sensex");
+  }
+  if (lowerText.includes("gold") || lowerText.includes("silver") || lowerText.includes("bullion")) {
+    affectedAssets.push("Bullion");
+  }
+  if (lowerText.includes("crude") || lowerText.includes("oil") || lowerText.includes("brent")) {
+    affectedAssets.push("Crude Oil");
+  }
+  if (lowerText.includes("rupee") || lowerText.includes("inr") || lowerText.includes("usd")) {
+    affectedAssets.push("USD/INR");
+  }
+
+  // Individual Ticker mappings
+  if (lowerText.includes("hdfc bank") || lowerText.includes("hdfcbank")) {
+    affectedAssets.push("HDFC Bank");
+  }
+  if (lowerText.includes("icici bank") || lowerText.includes("icicibank")) {
+    affectedAssets.push("ICICI Bank");
+  }
+  if (lowerText.includes("reliance")) {
+    affectedAssets.push("Reliance Industries");
+  }
+  if (lowerText.includes("tcs")) {
+    affectedAssets.push("TCS");
+  }
+  if (lowerText.includes("infosys")) {
+    affectedAssets.push("Infosys");
+  }
+  if (lowerText.includes("tata motors")) {
+    affectedAssets.push("Tata Motors");
+  }
+  if (lowerText.includes("itc")) {
+    affectedAssets.push("ITC");
+  }
+
+  // Fallbacks
+  if (affectedSectors.length === 0) {
+    affectedSectors.push("Macroeconomy");
+  }
+  if (affectedAssets.length === 0) {
+    affectedAssets.push("General Markets");
+  }
+
+  return { affectedSectors, affectedAssets };
+}
 
 export async function GET(request: Request) {
   try {
@@ -117,6 +225,8 @@ export async function GET(request: Request) {
         // Urgency
         const urgency = Math.abs(impactScore) > 5 ? "high" : Math.abs(impactScore) > 3 ? "medium" : "low";
 
+        const { affectedSectors, affectedAssets } = analyzeImpact(title, summary);
+
         allArticles.push({
           id: `live-${idCounter++}`,
           title,
@@ -127,6 +237,8 @@ export async function GET(request: Request) {
           summary: summary.substring(0, 200) + (summary.length > 200 ? "..." : ""),
           impactScore,
           link,
+          affectedSectors,
+          affectedAssets,
         });
 
         sourceArticleCount++;
