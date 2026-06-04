@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Pre-Market Momentum | Live Indian Open Signals",
     description: "Get real-time market updates, GIFT NIFTY predictions, live Indian ADR premiums, and MCX commodities arbitrage tracking.",
-    url: "https://pre-market-momentum.vercel.app",
+    url: "https://premarketmomentum.com",
     siteName: "Pre-Market Momentum",
     locale: "en_IN",
     type: "website",

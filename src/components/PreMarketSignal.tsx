@@ -29,7 +29,7 @@ export default function PreMarketSignal({ signalData }: PreMarketSignalProps) {
     const giftNiftyVal = components.giftNifty.value.toLocaleString("en-IN");
     const giftNiftyStatus = components.giftNifty.status;
     const shareText = `⚡ Pre-Market India Opening Signal: ${signal} (${confidence}% Confidence)\n📈 GIFT Nifty: ₹${giftNiftyVal} (${giftNiftyStatus})\n\nTrack live opening signals & arbitrage setups:`;
-    const shareUrl = "https://pre-market-momentum.vercel.app";
+    const shareUrl = "https://premarketmomentum.com";
 
     if (platform === "native") {
       if (navigator.share) {

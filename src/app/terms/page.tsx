@@ -19,7 +19,7 @@ export default function TermsOfService() {
 
       <div className="prose prose-slate dark:prose-invert max-w-none space-y-6">
         <p>
-          Welcome to <strong>Pre-Market Momentum</strong>. These terms and conditions outline the rules and regulations for the use of Pre-Market Momentum's Website, located at <code>pre-market-momentum.vercel.app</code>.
+          Welcome to <strong>Pre-Market Momentum</strong>. These terms and conditions outline the rules and regulations for the use of Pre-Market Momentum's Website, located at <code>premarketmomentum.com</code>.
         </p>
         <p>
           By accessing this website, we assume you accept these terms and conditions. Do not continue to use Pre-Market Momentum if you do not agree to take all of the terms and conditions stated on this page.

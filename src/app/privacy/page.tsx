@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
 
       <div className="prose prose-slate dark:prose-invert max-w-none space-y-6">
         <p>
-          At <strong>Pre-Market Momentum</strong>, accessible from <code>pre-market-momentum.vercel.app</code>, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Pre-Market Momentum and how we use it.
+          At <strong>Pre-Market Momentum</strong>, accessible from <code>premarketmomentum.com</code>, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Pre-Market Momentum and how we use it.
         </p>
         <p>
           If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.
