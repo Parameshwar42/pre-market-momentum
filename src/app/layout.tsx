@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import Script from "next/script";
 import { ThemeProvider } from "@/components/ThemeContext";
 import { WatchlistProvider } from "@/components/WatchlistContext";
 import Header from "@/components/Header";
@@ -45,6 +46,22 @@ export default function RootLayout({
             </main>
             <Footer />
             <Analytics />
+            
+            {/* OneSignal Web Push Notifications */}
+            <Script
+              src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+              strategy="afterInteractive"
+            />
+            <Script id="onesignal-init" strategy="afterInteractive">
+              {`
+                window.OneSignalDeferred = window.OneSignalDeferred || [];
+                OneSignalDeferred.push(async function(OneSignal) {
+                  await OneSignal.init({
+                    appId: "bf32e443-f648-4c4b-b1d6-b521e02b79c4",
+                  });
+                });
+              `}
+            </Script>
           </WatchlistProvider>
         </ThemeProvider>
       </body>
