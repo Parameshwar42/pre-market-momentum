@@ -95,8 +95,12 @@ export default function Footer() {
               &copy; {currentYear} Pre-Market Momentum. All rights reserved.
             </span>
             <div className="flex gap-4">
-              <span className="hover:text-foreground transition-colors cursor-pointer">Privacy Policy</span>
-              <span className="hover:text-foreground transition-colors cursor-pointer">Terms of Service</span>
+              <Link href="/privacy" className="hover:text-foreground transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:text-foreground transition-colors">
+                Terms of Service
+              </Link>
             </div>
           </div>
         </div>
