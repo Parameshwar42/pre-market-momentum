@@ -8,6 +8,7 @@ import { WatchlistProvider } from "@/components/WatchlistContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MarketTicker from "@/components/MarketTicker";
+import CookieConsent from "@/components/CookieConsent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -69,6 +70,7 @@ export default function RootLayout({
             </main>
             <Footer />
             <Analytics />
+            <CookieConsent />
             
             {/* OneSignal Web Push Notifications */}
             <Script

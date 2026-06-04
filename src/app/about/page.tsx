@@ -104,6 +104,49 @@ export default function AboutPanel() {
         </div>
       </div>
 
+      {/* Contact & Support Desk */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 border-b border-border/60 pb-3">
+          <HelpCircle className="h-5 w-5 text-indigo-500" />
+          <h2 className="text-lg font-black text-foreground tracking-tight">Contact & Publisher Support</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="rounded-2xl border border-border bg-card p-5 space-y-3 flex flex-col justify-between">
+            <div className="space-y-2">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/10 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+                Direct Desk
+              </span>
+              <h4 className="font-extrabold text-foreground text-sm">Reach Out via Email</h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                For commercial partnerships, publisher feedback, or API collaborations, drop a message to our administrator desk. We respond within 24 working hours.
+              </p>
+            </div>
+            <a 
+              href="mailto:contact.premarketpulse@gmail.com" 
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 hover:border-indigo-500/40 py-2.5 text-xs font-bold transition-all duration-200 cursor-pointer"
+            >
+              contact.premarketpulse@gmail.com
+            </a>
+          </div>
+
+          <div className="rounded-2xl border border-border bg-card p-5 space-y-3 flex flex-col justify-between">
+            <div className="space-y-2">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                Support Time
+              </span>
+              <h4 className="font-extrabold text-foreground text-sm">Support Operations</h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                We operate Monday through Friday, 9:00 AM to 5:00 PM IST (aligning with domestic trading hours). Our desk is closed on NSE market holidays.
+              </p>
+            </div>
+            <div className="text-center rounded-xl bg-muted/60 p-2.5 text-xs font-mono font-bold text-muted-foreground border border-border/40">
+              Response Time: &lt; 24h
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Required Disclaimer */}
       <div id="disclaimer" className="rounded-3xl border border-rose-500/20 bg-rose-500/5 dark:bg-rose-500/10 p-6 space-y-3 scroll-mt-24">
         <div className="flex items-center gap-2 text-rose-500">
