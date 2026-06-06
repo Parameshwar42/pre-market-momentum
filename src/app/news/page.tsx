@@ -190,7 +190,7 @@ export default function NewsMarketAlerts() {
       {/* Category selector pills */}
       <div className="space-y-1.5">
         <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block">Filter by Topic:</span>
-        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-2">
+        <div className="flex w-full max-w-full overflow-x-auto pb-2 scrollbar-none gap-2">
           {categories.map((cat) => {
             const isActive = activeCategory === cat.value;
             return (
@@ -213,7 +213,7 @@ export default function NewsMarketAlerts() {
       {/* Source selector pills */}
       <div className="space-y-1.5 border-b border-border/30 pb-3">
         <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block">Filter by Publisher Source:</span>
-        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-2">
+        <div className="flex w-full max-w-full overflow-x-auto pb-2 scrollbar-none gap-2">
           {sources.map((src) => {
             const isActive = activeSource === src.value;
             return (

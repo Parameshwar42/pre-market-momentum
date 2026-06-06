@@ -34,7 +34,7 @@ export default function MarketTicker() {
         <TrendingUp className="h-3 w-3 animate-bounce" />
         <span>Live Ticker</span>
       </div>
-      <div className="ticker-wrap relative w-full h-full flex items-center">
+      <div className="ticker-wrap relative w-full h-full flex items-center overflow-hidden whitespace-nowrap">
         <div className="ticker-content flex items-center gap-12 pl-6">
           {loopingItems.map((item, idx) => {
             const isPositive = item.change >= 0;

@@ -76,7 +76,7 @@ export default function RootLayout({
           <WatchlistProvider>
             <MarketTicker />
             <Header />
-            <main className="flex-1 flex flex-col">
+            <main className="flex-1 flex flex-col max-w-full overflow-x-hidden">
               {children}
             </main>
             <Footer />
