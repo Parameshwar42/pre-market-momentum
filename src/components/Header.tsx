@@ -30,6 +30,7 @@ export default function Header() {
     { label: "News & Alerts", path: "/news" },
     { label: "Commodities", path: "/commodities" },
     { label: "ADR Watchlist", path: "/adr" },
+    { label: "Daily Notes", path: "/notes" },
     { label: "About", path: "/about" },
   ];
 

@@ -58,6 +58,11 @@ export default function Footer() {
                   Market News & Cues
                 </Link>
               </li>
+              <li>
+                <Link href="/notes" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Daily Market Notes
+                </Link>
+              </li>
             </ul>
           </div>
 
