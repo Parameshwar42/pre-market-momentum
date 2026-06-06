@@ -33,6 +33,7 @@ export default function DailyNotes() {
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [isPublishing, setIsPublishing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   
   // Form state
   const [formTitle, setFormTitle] = useState("");
@@ -53,6 +54,12 @@ export default function DailyNotes() {
     } else {
       setNotes(initialNotes as Note[]);
       localStorage.setItem("premarket_daily_notes", JSON.stringify(initialNotes));
+    }
+
+    // Check if admin mode is active in URL query string (e.g. ?admin=true)
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get("admin") === "true") {
+      setIsAdmin(true);
     }
   }, []);
 
@@ -143,13 +150,15 @@ export default function DailyNotes() {
           </p>
         </div>
 
-        <button
-          onClick={() => setIsPublishing(!isPublishing)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white hover:bg-primary/95 text-xs font-bold shadow transition-all cursor-pointer select-none"
-        >
-          <Plus className="h-4 w-4" />
-          {isPublishing ? "Close Panel" : "Add Daily Note"}
-        </button>
+        {isAdmin && (
+          <button
+            onClick={() => setIsPublishing(!isPublishing)}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white hover:bg-primary/95 text-xs font-bold shadow transition-all cursor-pointer select-none"
+          >
+            <Plus className="h-4 w-4" />
+            {isPublishing ? "Close Panel" : "Add Daily Note"}
+          </button>
+        )}
       </div>
 
       {/* Admin Panel (Publish Form) */}
@@ -363,13 +372,15 @@ export default function DailyNotes() {
                       <span className="text-[9px] font-bold text-muted-foreground font-mono">
                         {note.date}
                       </span>
-                      <button
-                        onClick={(e) => handleDeleteNote(note.id, e)}
-                        className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
-                        title="Delete from local storage"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
+                      {isAdmin && (
+                        <button
+                          onClick={(e) => handleDeleteNote(note.id, e)}
+                          className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
+                          title="Delete from local storage"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      )}
                     </div>
                     <h4 className="text-sm font-extrabold text-foreground group-hover:text-primary transition-colors leading-snug">
                       {note.title}
