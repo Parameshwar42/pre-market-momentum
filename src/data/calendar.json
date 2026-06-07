@@ -6,6 +6,7 @@
     "country": "IN",
     "priority": 3,
     "source": "Society of Indian Automobile Manufacturers (SIAM) / Economic Times",
+    "sourceUrl": "https://economictimes.indiatimes.com/industry/auto",
     "description": "Monthly release of wholesale dispatch figures by major Indian automakers. This tracks consumer spending health and auto sector demand trends.",
     "impact": "Directly impacts Maruti Suzuki, Tata Motors, Mahindra & Mahindra, and two-wheeler stocks.",
     "result": "Completed. Total domestic wholesales reached a record 4,40,808 units, showing a strong 26% YoY growth. Maruti Suzuki led with 1,90,337 units (+40% YoY). Tata Motors wholesaled 59,090 units (+42.2% YoY). Mahindra & Mahindra wholesaled 58,021 units (+10.7% YoY). SUV and EV demand remains exceptionally high (Tata EV sales up 85% to 10,517 units)."
@@ -17,6 +18,7 @@
     "country": "IN",
     "priority": 3,
     "source": "Ministry of Finance / Economic Times",
+    "sourceUrl": "https://pib.gov.in",
     "description": "Monthly announcement of gross Goods and Services Tax revenue collected. High collections indicate strong economic activity and tax compliance.",
     "impact": "General sentiment indicator. Positively affects capital goods and infrastructure companies.",
     "result": "Completed. Gross GST revenue collections reached ₹1,94,184 crore (₹1.94 Lakh Crore), reflecting 3.2% YoY growth. Adjusted for a one-time spectrum-related telecom payment in May 2025, underlying gross collections grew by 9% YoY and net collections grew 10.1% YoY, indicating highly resilient retail consumption."
@@ -28,6 +30,7 @@
     "country": "IN",
     "priority": 5,
     "source": "Ministry of Statistics (MOSPI) / Economic Times",
+    "sourceUrl": "https://mospi.gov.in",
     "description": "Quarterly release of India's Gross Domestic Product growth rate for Jan-March 2026 and provisional annual estimates for the full fiscal year FY26.",
     "impact": "Market-wide mover. Dictates long-term FII flows and national growth outlook.",
     "result": "Completed. India's Q4 FY26 GDP growth printed at a stellar 7.8%, beating consensus expectations. Provisional annual GDP growth for the full financial year 2025-26 stood at 7.7%. Growth was robustly supported by strong activity in manufacturing, construction, and services."
@@ -38,7 +41,8 @@
     "date": "2026-06-05",
     "country": "IN",
     "priority": 5,
-    "source": "Reserve Bank of India / Economic Times",
+    "source": "Reserve Bank of India",
+    "sourceUrl": "https://www.rbi.org.in",
     "description": "Bi-monthly monetary policy committee announcement regarding repo rates, bank liquidity guidelines, and economic growth forecasts.",
     "impact": "Massive volatility expected in banking stocks (Nifty Bank, private & public PSU banks), NBFCs, real estate, and automobile sectors.",
     "result": "Completed. Repo rate kept unchanged at 5.25%. The MPC maintained its 'neutral' stance (unanimous vote). However, citing West Asia conflicts and inflation pressures, the RBI lowered its FY27 GDP growth forecast to 6.6% (from 6.9%) and raised its FY27 CPI inflation projection to 5.1% (from 4.6%)."
@@ -49,7 +53,8 @@
     "date": "2026-06-05",
     "country": "US",
     "priority": 3,
-    "source": "US Bureau of Labor Statistics / Bloomberg",
+    "source": "US Bureau of Labor Statistics",
+    "sourceUrl": "https://www.bls.gov",
     "description": "Critical monthly report tracking job additions and unemployment rate in the US. Determines US Fed policy tightness.",
     "impact": "Triggers global capital movements and moves indices (Nifty 50, GIFT Nifty, DXY).",
     "result": "Completed. The US economy added 172,000 jobs in May, significantly beating the consensus forecast of 85,000. The unemployment rate remained stable at 4.3%. Upward revisions added 93,000 jobs to previous months, highlighting US labor market resilience and reducing near-term Fed rate-cut expectations."
@@ -60,7 +65,8 @@
     "date": "2026-06-10",
     "country": "US",
     "priority": 4,
-    "source": "US Bureau of Labor Statistics / Moneycontrol",
+    "source": "US Bureau of Labor Statistics",
+    "sourceUrl": "https://www.bls.gov/cpi/",
     "description": "Consumer Price Index measures the rate of price changes in the United States. High inflation reduces the likelihood of Fed rate cuts, driving FII capital outflows from emerging markets like India.",
     "impact": "Direct impact on the US Dollar Index (DXY), gold spot prices, and FII flows in the Nifty 50."
   },
@@ -70,7 +76,8 @@
     "date": "2026-06-12",
     "country": "IN",
     "priority": 3,
-    "source": "Ministry of Statistics (MOSPI) / Economic Times",
+    "source": "Ministry of Statistics (MOSPI)",
+    "sourceUrl": "https://mospi.gov.in",
     "description": "India's domestic consumer price index (CPI) and Index of Industrial Production (IIP) showing manufacturing and services growth rates. High inflation cuts expectations of domestic interest rate reductions.",
     "impact": "Affects domestic bond yields, Nifty IT, and FMCG sectors sensitive to rural demand."
   },
@@ -81,6 +88,7 @@
     "country": "IN",
     "priority": 4,
     "source": "India Meteorological Department (IMD)",
+    "sourceUrl": "https://mausam.imd.gov.in",
     "description": "Tracking the spread of the annual monsoon rains across Central and Northern India. Crucial for rural sowing, agricultural yield expectations, and rural consumer demand.",
     "impact": "Directly moves fertilizer, agricultural equipment, chemical, and rural consumer discretionary (FMCG) stocks."
   },
@@ -90,7 +98,8 @@
     "date": "2026-06-17",
     "country": "US",
     "priority": 5,
-    "source": "US Federal Reserve / Bloomberg",
+    "source": "US Federal Reserve",
+    "sourceUrl": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
     "description": "Federal Open Market Committee announcement of benchmark US interest rates. A hawkish stance (keeping rates high) strengthens the US dollar and triggers foreign money outflows from India's stock market.",
     "impact": "Global market mover. Directly impacts GIFT Nifty, domestic Nifty 50, INR/USD currency, and global gold bullion."
   },
@@ -100,7 +109,8 @@
     "date": "2026-07-01",
     "country": "IN",
     "priority": 3,
-    "source": "Ministry of Finance / Economic Times",
+    "source": "Ministry of Finance",
+    "sourceUrl": "https://pib.gov.in",
     "description": "Monthly report on total Goods and Services Tax (GST) revenue collections in India. High collections confirm robust domestic economic growth and strong retail consumption trends.",
     "impact": "General market sentiment indicator. High GST collections support capital goods and infrastructure sectors."
   },
@@ -110,7 +120,8 @@
     "date": "2026-08-08",
     "country": "IN",
     "priority": 5,
-    "source": "Reserve Bank of India / Economic Times",
+    "source": "Reserve Bank of India",
+    "sourceUrl": "https://www.rbi.org.in",
     "description": "Bi-monthly monetary policy committee announcement regarding repo rates, bank liquidity guidelines, and economic growth forecasts for the second half of the fiscal year.",
     "impact": "High volatility expected in banking stocks (Nifty Bank, private & public PSU banks), real estate, and automobile sectors."
   }

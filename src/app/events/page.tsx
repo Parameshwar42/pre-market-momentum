@@ -32,6 +32,7 @@ interface MarketEvent {
   country: "IN" | "US";
   priority: number; // 1 to 5 stars
   source: string;
+  sourceUrl?: string;
   description: string;
   impact: string;
   result?: string;
@@ -61,13 +62,14 @@ export default function MarketCalendar() {
   const [formCountry, setFormCountry] = useState<"IN" | "US">("IN");
   const [formPriority, setFormPriority] = useState(3);
   const [formSource, setFormSource] = useState("");
+  const [formSourceUrl, setFormSourceUrl] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [formImpact, setFormImpact] = useState("");
   const [formResult, setFormResult] = useState("");
 
   // Load events
   useEffect(() => {
-    const savedEvents = localStorage.getItem("premarket_calendar_events_v3");
+    const savedEvents = localStorage.getItem("premarket_calendar_events_v4");
     if (savedEvents) {
       try {
         setEvents(JSON.parse(savedEvents));
@@ -76,7 +78,7 @@ export default function MarketCalendar() {
       }
     } else {
       setEvents(initialEvents as MarketEvent[]);
-      localStorage.setItem("premarket_calendar_events_v3", JSON.stringify(initialEvents));
+      localStorage.setItem("premarket_calendar_events_v4", JSON.stringify(initialEvents));
     }
 
     // Check if admin mode is active in URL
@@ -124,6 +126,7 @@ export default function MarketCalendar() {
             country: formCountry,
             priority: Number(formPriority),
             source: formSource || "Manual Update",
+            sourceUrl: formSourceUrl || undefined,
             description: formDescription,
             impact: formImpact || "Market volatility expected.",
             result: formResult || undefined
@@ -133,7 +136,7 @@ export default function MarketCalendar() {
       }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
       setEvents(updated);
-      localStorage.setItem("premarket_calendar_events_v3", JSON.stringify(updated));
+      localStorage.setItem("premarket_calendar_events_v4", JSON.stringify(updated));
       setEditingEventId(null);
     } else {
       // Add mode
@@ -145,6 +148,7 @@ export default function MarketCalendar() {
         country: formCountry,
         priority: Number(formPriority),
         source: formSource || "Manual Update",
+        sourceUrl: formSourceUrl || undefined,
         description: formDescription,
         impact: formImpact || "Market volatility expected.",
         result: formResult || undefined
@@ -152,7 +156,7 @@ export default function MarketCalendar() {
 
       const updated = [...events, newEvent].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
       setEvents(updated);
-      localStorage.setItem("premarket_calendar_events_v3", JSON.stringify(updated));
+      localStorage.setItem("premarket_calendar_events_v4", JSON.stringify(updated));
     }
 
     // Reset Form
@@ -167,6 +171,7 @@ export default function MarketCalendar() {
     setFormCountry("IN");
     setFormPriority(3);
     setFormSource("");
+    setFormSourceUrl("");
     setFormDescription("");
     setFormImpact("");
     setFormResult("");
@@ -179,6 +184,7 @@ export default function MarketCalendar() {
     setFormCountry(event.country);
     setFormPriority(event.priority);
     setFormSource(event.source);
+    setFormSourceUrl(event.sourceUrl || "");
     setFormDescription(event.description);
     setFormImpact(event.impact);
     setFormResult(event.result || "");
@@ -190,7 +196,7 @@ export default function MarketCalendar() {
     if (confirm("Are you sure you want to delete this event from local storage?")) {
       const updated = events.filter(e => e.id !== id);
       setEvents(updated);
-      localStorage.setItem("premarket_calendar_events_v3", JSON.stringify(updated));
+      localStorage.setItem("premarket_calendar_events_v4", JSON.stringify(updated));
       if (editingEventId === id) {
         resetForm();
       }
@@ -552,13 +558,24 @@ export default function MarketCalendar() {
               </div>
             </div>
 
-            <div className="col-span-1 md:col-span-3 space-y-1.5">
+            <div className="col-span-1 md:col-span-2 space-y-1.5">
               <label className="text-xs font-bold text-muted-foreground">Primary Source / Publisher</label>
               <input
                 type="text"
                 placeholder="e.g., Reserve Bank of India / Economic Times"
                 value={formSource}
                 onChange={(e) => setFormSource(e.target.value)}
+                className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs focus:border-primary focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-muted-foreground">Source URL (Outbound Link)</label>
+              <input
+                type="url"
+                placeholder="https://example.com/source-report"
+                value={formSourceUrl}
+                onChange={(e) => setFormSourceUrl(e.target.value)}
                 className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs focus:border-primary focus:outline-none"
               />
             </div>
@@ -797,10 +814,24 @@ export default function MarketCalendar() {
                       </p>
                     </div>
 
-                    <div className="flex flex-wrap gap-4 text-[10px] text-muted-foreground pt-1">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[10px] text-muted-foreground pt-1">
                       <span><strong>Historical Impacted Area:</strong> {event.impact}</span>
                       <span className="hidden sm:inline">•</span>
-                      <span><strong>Source:</strong> {event.source}</span>
+                      <span>
+                        <strong>Source:</strong>{" "}
+                        {event.sourceUrl ? (
+                          <a 
+                            href={event.sourceUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-primary dark:text-indigo-400 hover:underline font-bold inline-flex items-center gap-0.5"
+                          >
+                            {event.source} ↗
+                          </a>
+                        ) : (
+                          event.source
+                        )}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -826,7 +857,7 @@ export default function MarketCalendar() {
                   return (
                     <div 
                       key={event.id}
-                      className="group relative rounded-2xl border border-border bg-card p-5 space-y-3 hover:border-primary/50 transition-all duration-200 animate-in fade-in duration-300"
+                      className="group relative rounded-2xl border border-border bg-card p-5 space-y-3 hover:border-primary/50 transition-all duration-200"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-2">
                         <div className="flex items-center gap-2">
@@ -893,7 +924,20 @@ export default function MarketCalendar() {
                         </div>
                         <div className="rounded-xl bg-muted/50 p-2.5 border border-border/40 space-y-0.5">
                           <span className="font-bold text-muted-foreground block uppercase text-[8px] tracking-wider">Official Data Source</span>
-                          <span className="text-foreground font-medium font-mono truncate block">{event.source}</span>
+                          <span className="text-foreground font-medium truncate block">
+                            {event.sourceUrl ? (
+                              <a 
+                                href={event.sourceUrl} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="text-primary dark:text-indigo-400 hover:underline font-bold inline-flex items-center gap-0.5"
+                              >
+                                {event.source} ↗
+                              </a>
+                            ) : (
+                              event.source
+                            )}
+                          </span>
                         </div>
                       </div>
                     </div>
