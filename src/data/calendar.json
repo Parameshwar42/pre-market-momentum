@@ -1,18 +1,18 @@
 [
   {
     "id": "rbi-monetary-policy-june-2026",
-    "title": "RBI Monetary Policy Meeting Statement",
-    "date": "2026-06-11",
+    "title": "RBI Monetary Policy Meeting Statement (June)",
+    "date": "2026-06-05",
     "country": "IN",
     "priority": 5,
     "source": "Reserve Bank of India / Economic Times",
-    "description": "Bi-monthly monetary policy committee announcement regarding repo rates, bank liquidity guidelines, and economic growth forecasts. This dictates interest rate trajectories for home loans and capital costs.",
+    "description": "Bi-monthly monetary policy committee announcement regarding repo rates, bank liquidity guidelines, and economic growth forecasts. Dictates interest rate trajectories for home loans and capital costs.",
     "impact": "Massive volatility expected in banking stocks (Nifty Bank, private & public PSU banks), NBFCs, real estate, and automobile sectors."
   },
   {
     "id": "us-cpi-inflation-june-2026",
-    "title": "US CPI Inflation Data Release",
-    "date": "2026-06-12",
+    "title": "US CPI Inflation Data Release (May Data)",
+    "date": "2026-06-10",
     "country": "US",
     "priority": 4,
     "source": "US Bureau of Labor Statistics / Moneycontrol",
@@ -58,5 +58,15 @@
     "source": "Ministry of Finance / Economic Times",
     "description": "Monthly report on total Goods and Services Tax (GST) revenue collections in India. High collections confirm robust domestic economic growth and strong retail consumption trends.",
     "impact": "General market sentiment indicator. High GST collections support capital goods and infrastructure sectors."
+  },
+  {
+    "id": "rbi-monetary-policy-august-2026",
+    "title": "RBI Monetary Policy Meeting Statement (August)",
+    "date": "2026-08-08",
+    "country": "IN",
+    "priority": 5,
+    "source": "Reserve Bank of India / Economic Times",
+    "description": "Bi-monthly monetary policy committee announcement regarding repo rates, bank liquidity guidelines, and economic growth forecasts for the second half of the fiscal year.",
+    "impact": "High volatility expected in banking stocks (Nifty Bank, private & public PSU banks), real estate, and automobile sectors."
   }
 ]

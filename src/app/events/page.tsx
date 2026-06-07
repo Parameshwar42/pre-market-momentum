@@ -62,7 +62,7 @@ export default function MarketCalendar() {
 
   // Load events
   useEffect(() => {
-    const savedEvents = localStorage.getItem("premarket_calendar_events");
+    const savedEvents = localStorage.getItem("premarket_calendar_events_v2");
     if (savedEvents) {
       try {
         setEvents(JSON.parse(savedEvents));
@@ -71,7 +71,7 @@ export default function MarketCalendar() {
       }
     } else {
       setEvents(initialEvents as MarketEvent[]);
-      localStorage.setItem("premarket_calendar_events", JSON.stringify(initialEvents));
+      localStorage.setItem("premarket_calendar_events_v2", JSON.stringify(initialEvents));
     }
 
     // Check if admin mode is active in URL
@@ -122,7 +122,7 @@ export default function MarketCalendar() {
 
     const updated = [...events, newEvent].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     setEvents(updated);
-    localStorage.setItem("premarket_calendar_events", JSON.stringify(updated));
+    localStorage.setItem("premarket_calendar_events_v2", JSON.stringify(updated));
 
     // Reset Form
     setFormTitle("");
@@ -139,7 +139,7 @@ export default function MarketCalendar() {
     if (confirm("Are you sure you want to delete this event from local storage?")) {
       const updated = events.filter(e => e.id !== id);
       setEvents(updated);
-      localStorage.setItem("premarket_calendar_events", JSON.stringify(updated));
+      localStorage.setItem("premarket_calendar_events_v2", JSON.stringify(updated));
     }
   };
 
