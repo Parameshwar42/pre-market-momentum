@@ -15,7 +15,8 @@ import {
   Activity,
   ChevronRight,
   TrendingDown,
-  Info
+  Info,
+  Calendar
 } from "lucide-react";
 import Link from "next/link";
 
@@ -158,7 +159,7 @@ export default function HomeDashboard() {
       </div>
 
       {/* Quick Access CTAs (Millennial/Gen-Z Focused Psychology) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* CTA 1: Live Market Terminal */}
         <Link 
           href="/live"
@@ -223,6 +224,38 @@ export default function HomeDashboard() {
           
           <div className="mt-6 flex items-center gap-1 text-xs font-bold text-indigo-500 group-hover:underline relative z-10">
             <span>View Actionable Insights</span>
+            <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* CTA 3: Events Calendar */}
+        <Link 
+          href="/events"
+          className="group relative rounded-3xl border border-border bg-gradient-to-br from-amber-500/5 to-secondary/30 p-6 overflow-hidden transition-all duration-300 hover:border-amber-500/40 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-500/5 active:scale-98 cursor-pointer"
+        >
+          {/* Glowing background blur effect */}
+          <div className="absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/15 transition-all duration-500" />
+          
+          <div className="flex items-start justify-between gap-4 relative z-10">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 text-[10px] font-extrabold text-amber-600 dark:text-amber-400 uppercase tracking-widest leading-none">
+                📅 Volatility Calendar
+              </div>
+              <h3 className="text-xl font-extrabold text-foreground tracking-tight group-hover:text-amber-500 transition-colors duration-200">
+                Events Calendar
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-sm">
+                Track high-impact macroeconomic dates, rate announcements, and monthly playbooks with countdown warnings.
+              </p>
+            </div>
+            
+            <div className="h-10 w-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center shrink-0 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300 shadow-sm">
+              <Calendar className="h-5 w-5" />
+            </div>
+          </div>
+          
+          <div className="mt-6 flex items-center gap-1 text-xs font-bold text-amber-500 group-hover:underline relative z-10">
+            <span>Explore Events Hub</span>
             <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
           </div>
         </Link>
