@@ -18,7 +18,9 @@ import {
   ArrowRight, 
   Filter,
   CheckCircle,
-  FileText
+  FileText,
+  Edit,
+  RotateCcw
 } from "lucide-react";
 import Link from "next/link";
 import initialEvents from "@/data/calendar.json";
@@ -32,6 +34,7 @@ interface MarketEvent {
   source: string;
   description: string;
   impact: string;
+  result?: string;
 }
 
 interface PlaybookMonth {
@@ -52,6 +55,7 @@ export default function MarketCalendar() {
   const [selectedMonth, setSelectedMonth] = useState<string>("JUNE");
 
   // Admin form state
+  const [editingEventId, setEditingEventId] = useState<string | null>(null);
   const [formTitle, setFormTitle] = useState("");
   const [formDate, setFormDate] = useState("");
   const [formCountry, setFormCountry] = useState<"IN" | "US">("IN");
@@ -59,10 +63,11 @@ export default function MarketCalendar() {
   const [formSource, setFormSource] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [formImpact, setFormImpact] = useState("");
+  const [formResult, setFormResult] = useState("");
 
   // Load events
   useEffect(() => {
-    const savedEvents = localStorage.getItem("premarket_calendar_events_v2");
+    const savedEvents = localStorage.getItem("premarket_calendar_events_v3");
     if (savedEvents) {
       try {
         setEvents(JSON.parse(savedEvents));
@@ -71,7 +76,7 @@ export default function MarketCalendar() {
       }
     } else {
       setEvents(initialEvents as MarketEvent[]);
-      localStorage.setItem("premarket_calendar_events_v2", JSON.stringify(initialEvents));
+      localStorage.setItem("premarket_calendar_events_v3", JSON.stringify(initialEvents));
     }
 
     // Check if admin mode is active in URL
@@ -108,23 +113,55 @@ export default function MarketCalendar() {
     e.preventDefault();
     if (!formTitle || !formDate || !formDescription) return;
 
-    const id = `${formTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now()}`;
-    const newEvent: MarketEvent = {
-      id,
-      title: formTitle,
-      date: formDate,
-      country: formCountry,
-      priority: Number(formPriority),
-      source: formSource || "Manual Update",
-      description: formDescription,
-      impact: formImpact || "Market volatility expected."
-    };
+    if (editingEventId) {
+      // Edit mode
+      const updated = events.map(evt => {
+        if (evt.id === editingEventId) {
+          return {
+            ...evt,
+            title: formTitle,
+            date: formDate,
+            country: formCountry,
+            priority: Number(formPriority),
+            source: formSource || "Manual Update",
+            description: formDescription,
+            impact: formImpact || "Market volatility expected.",
+            result: formResult || undefined
+          };
+        }
+        return evt;
+      }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-    const updated = [...events, newEvent].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    setEvents(updated);
-    localStorage.setItem("premarket_calendar_events_v2", JSON.stringify(updated));
+      setEvents(updated);
+      localStorage.setItem("premarket_calendar_events_v3", JSON.stringify(updated));
+      setEditingEventId(null);
+    } else {
+      // Add mode
+      const id = `${formTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now()}`;
+      const newEvent: MarketEvent = {
+        id,
+        title: formTitle,
+        date: formDate,
+        country: formCountry,
+        priority: Number(formPriority),
+        source: formSource || "Manual Update",
+        description: formDescription,
+        impact: formImpact || "Market volatility expected.",
+        result: formResult || undefined
+      };
+
+      const updated = [...events, newEvent].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      setEvents(updated);
+      localStorage.setItem("premarket_calendar_events_v3", JSON.stringify(updated));
+    }
 
     // Reset Form
+    resetForm();
+    setIsAddingEvent(false);
+  };
+
+  const resetForm = () => {
+    setEditingEventId(null);
     setFormTitle("");
     setFormDate("");
     setFormCountry("IN");
@@ -132,14 +169,31 @@ export default function MarketCalendar() {
     setFormSource("");
     setFormDescription("");
     setFormImpact("");
-    setIsAddingEvent(false);
+    setFormResult("");
+  };
+
+  const handleEditClick = (event: MarketEvent) => {
+    setEditingEventId(event.id);
+    setFormTitle(event.title);
+    setFormDate(event.date);
+    setFormCountry(event.country);
+    setFormPriority(event.priority);
+    setFormSource(event.source);
+    setFormDescription(event.description);
+    setFormImpact(event.impact);
+    setFormResult(event.result || "");
+    setIsAddingEvent(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDeleteEvent = (id: string) => {
     if (confirm("Are you sure you want to delete this event from local storage?")) {
       const updated = events.filter(e => e.id !== id);
       setEvents(updated);
-      localStorage.setItem("premarket_calendar_events_v2", JSON.stringify(updated));
+      localStorage.setItem("premarket_calendar_events_v3", JSON.stringify(updated));
+      if (editingEventId === id) {
+        resetForm();
+      }
     }
   };
 
@@ -203,7 +257,7 @@ export default function MarketCalendar() {
       indiaEvents: [
         "Q4 Corporate Earnings season begins",
         "Start of new Financial Year (FY)",
-        "Auto Sales Data",
+        "Auto Sales",
         "GST Collections"
       ],
       globalEvents: [
@@ -338,9 +392,16 @@ export default function MarketCalendar() {
     return diff >= 0 && diff <= 3;
   });
 
-  // Split events: upcoming vs passed
-  const upcomingEvents = events.filter(e => getDaysDiff(e.date) >= 0);
-  const passedEvents = events.filter(e => getDaysDiff(e.date) < 0).reverse(); // closest first
+  // Split events: upcoming vs passed (completed)
+  // Completed events (date difference < 0) are ordered descending (most recent first)
+  const passedEvents = events
+    .filter(e => getDaysDiff(e.date) < 0)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  // Upcoming events (date difference >= 0) are ordered ascending (closest first)
+  const upcomingEvents = events
+    .filter(e => getDaysDiff(e.date) >= 0)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8 flex-1 flex flex-col justify-start">
@@ -386,7 +447,12 @@ export default function MarketCalendar() {
 
         {isAdmin && (
           <button
-            onClick={() => setIsAddingEvent(!isAddingEvent)}
+            onClick={() => {
+              if (isAddingEvent) {
+                resetForm();
+              }
+              setIsAddingEvent(!isAddingEvent);
+            }}
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white hover:bg-primary/95 text-xs font-bold shadow transition-all cursor-pointer select-none"
           >
             <Plus className="h-4 w-4" />
@@ -401,16 +467,30 @@ export default function MarketCalendar() {
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-primary animate-pulse"></span>
-              <h3 className="text-sm font-black text-foreground">Add New Economic Event</h3>
+              <h3 className="text-sm font-black text-foreground">
+                {editingEventId ? "Edit Economic Event" : "Add New Economic Event"}
+              </h3>
             </div>
-            <button
-              onClick={handleCopyJSON}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary hover:bg-secondary/80 border border-border text-[10px] font-bold text-foreground cursor-pointer transition-colors"
-              title="Copy JSON to paste in src/data/calendar.json"
-            >
-              {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
-              {copied ? "Copied!" : "Copy code JSON"}
-            </button>
+            <div className="flex items-center gap-2">
+              {editingEventId && (
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-secondary text-[10px] font-bold text-foreground border border-border cursor-pointer hover:bg-secondary/80"
+                >
+                  <RotateCcw className="h-3 w-3" />
+                  Reset Form
+                </button>
+              )}
+              <button
+                onClick={handleCopyJSON}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary hover:bg-secondary/80 border border-border text-[10px] font-bold text-foreground cursor-pointer transition-colors"
+                title="Copy JSON to paste in src/data/calendar.json"
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
+                {copied ? "Copied!" : "Copy code JSON"}
+              </button>
+            </div>
           </div>
 
           <div className="rounded-lg bg-muted p-3 border border-border/70 text-[11px] text-muted-foreground flex gap-2">
@@ -506,10 +586,24 @@ export default function MarketCalendar() {
               />
             </div>
 
+            <div className="col-span-1 md:col-span-3 space-y-1.5">
+              <label className="text-xs font-bold text-muted-foreground">Announced Result / Outcome (For Completed Events - Optional)</label>
+              <textarea
+                placeholder="Specify the actual numbers or rate decision announced. e.g. Repo rate kept unchanged at 5.25%. GDP growth printed at 7.8%."
+                rows={2}
+                value={formResult}
+                onChange={(e) => setFormResult(e.target.value)}
+                className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs focus:border-primary focus:outline-none font-sans"
+              />
+            </div>
+
             <div className="col-span-1 md:col-span-3 flex justify-end gap-2 pt-2">
               <button
                 type="button"
-                onClick={() => setIsAddingEvent(false)}
+                onClick={() => {
+                  resetForm();
+                  setIsAddingEvent(false);
+                }}
                 className="px-4 py-2 rounded-xl bg-secondary text-foreground text-xs font-bold hover:bg-secondary/80 border border-border cursor-pointer"
               >
                 Cancel
@@ -518,7 +612,7 @@ export default function MarketCalendar() {
                 type="submit"
                 className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 cursor-pointer"
               >
-                Publish Event
+                {editingEventId ? "Update Event" : "Publish Event"}
               </button>
             </div>
           </form>
@@ -598,7 +692,7 @@ export default function MarketCalendar() {
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
-          Upcoming Economic Calendar
+          Economic Events Feed
         </button>
         <button
           onClick={() => setActiveTab("checklist")}
@@ -622,16 +716,108 @@ export default function MarketCalendar() {
         </button>
       </div>
 
-      {/* Tab Contents: Calendar */}
+      {/* Tab Contents: Calendar Feed (Completed Top, Upcoming Bottom) */}
       {activeTab === "calendar" && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Upcoming Section */}
-          <div className="lg:col-span-8 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-black text-foreground uppercase tracking-tight">
-                Chronological Events Feed ({upcomingEvents.length})
-              </h3>
-            </div>
+        <div className="space-y-10">
+          
+          {/* Subsection 1: Completed Events (Outcomes Displayed Inside) */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-black text-foreground uppercase tracking-widest pl-1 flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-emerald-500" />
+              Completed Macro Events & Results
+            </h3>
+
+            {passedEvents.length > 0 ? (
+              <div className="space-y-4">
+                {passedEvents.map((event) => (
+                  <div 
+                    key={event.id}
+                    className="group relative rounded-2xl border border-emerald-500/10 bg-card/75 p-5 space-y-4 hover:border-emerald-500/30 transition-all duration-200"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">{event.country === "IN" ? "🇮🇳" : "🇺🇸"}</span>
+                        <span className="text-xs font-bold text-muted-foreground">
+                          {event.country === "IN" ? "India" : "United States"}
+                        </span>
+                        <span className="text-muted-foreground/30">•</span>
+                        <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                          Completed: {event.date}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <div className="flex text-amber-500" title={`Priority: ${event.priority}/5`}>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star 
+                              key={i} 
+                              className={`h-3 w-3 ${i < event.priority ? "fill-amber-500" : "text-muted-foreground/30"}`} 
+                            />
+                          ))}
+                        </div>
+                        
+                        {isAdmin && (
+                          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                            <button
+                              onClick={() => handleEditClick(event)}
+                              className="p-1 rounded text-muted-foreground hover:text-primary hover:bg-primary/10 cursor-pointer"
+                              title="Edit Event"
+                            >
+                              <Edit className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteEvent(event.id)}
+                              className="p-1 rounded text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 cursor-pointer"
+                              title="Delete Event"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="text-base font-extrabold text-foreground tracking-tight group-hover:text-emerald-500 transition-colors">
+                        {event.title}
+                      </h4>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {event.description}
+                      </p>
+                    </div>
+
+                    {/* Announced Result Block */}
+                    <div className="rounded-xl bg-emerald-500/5 dark:bg-emerald-500/10 border border-emerald-500/25 p-4 space-y-2 shadow-inner">
+                      <div className="flex items-center gap-1.5 text-xs font-black text-emerald-600 dark:text-emerald-400">
+                        <Sparkles className="h-4 w-4 animate-pulse" />
+                        ANNOUNCED ECONOMIC RESULT
+                      </div>
+                      <p className="text-xs text-foreground font-semibold leading-relaxed">
+                        {event.result || "Official result announcement released. Click edit in admin mode to supply the precise outcome."}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-4 text-[10px] text-muted-foreground pt-1">
+                      <span><strong>Historical Impacted Area:</strong> {event.impact}</span>
+                      <span className="hidden sm:inline">•</span>
+                      <span><strong>Source:</strong> {event.source}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-dashed border-border p-8 text-center bg-card/20 text-xs text-muted-foreground">
+                No completed economic events logged.
+              </div>
+            )}
+          </div>
+
+          {/* Subsection 2: Upcoming Events (Downside of the List) */}
+          <div className="space-y-4 pt-4 border-t border-border/60">
+            <h3 className="text-sm font-black text-foreground uppercase tracking-widest pl-1 flex items-center gap-2">
+              <Clock className="h-4 w-4 text-primary" />
+              Upcoming Volatility Events
+            </h3>
 
             {upcomingEvents.length > 0 ? (
               <div className="space-y-4">
@@ -640,7 +826,7 @@ export default function MarketCalendar() {
                   return (
                     <div 
                       key={event.id}
-                      className="group relative rounded-2xl border border-border bg-card p-5 space-y-3 hover:border-primary/50 transition-all duration-200"
+                      className="group relative rounded-2xl border border-border bg-card p-5 space-y-3 hover:border-primary/50 transition-all duration-200 animate-in fade-in duration-300"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-2">
                         <div className="flex items-center gap-2">
@@ -650,7 +836,7 @@ export default function MarketCalendar() {
                           </span>
                           <span className="text-muted-foreground/30">•</span>
                           <span className="text-[10px] font-mono font-bold text-muted-foreground bg-secondary px-2 py-0.5 rounded border border-border/40">
-                            {event.date}
+                            Scheduled: {event.date}
                           </span>
                         </div>
 
@@ -665,13 +851,22 @@ export default function MarketCalendar() {
                           </div>
                           
                           {isAdmin && (
-                            <button
-                              onClick={() => handleDeleteEvent(event.id)}
-                              className="p-1 rounded text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
-                              title="Delete Event"
-                            >
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </button>
+                            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                              <button
+                                onClick={() => handleEditClick(event)}
+                                className="p-1 rounded text-muted-foreground hover:text-primary hover:bg-primary/10 cursor-pointer"
+                                title="Edit Event"
+                              >
+                                <Edit className="h-3.5 w-3.5" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteEvent(event.id)}
+                                className="p-1 rounded text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 cursor-pointer"
+                                title="Delete Event"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -706,66 +901,8 @@ export default function MarketCalendar() {
                 })}
               </div>
             ) : (
-              <div className="rounded-2xl border border-dashed border-border p-8 text-center bg-card/20 space-y-2 text-muted-foreground">
-                <p className="text-xs">No upcoming economic calendar dates available in local database.</p>
-              </div>
-            )}
-          </div>
-
-          {/* Passed Events Feed */}
-          <div className="lg:col-span-4 space-y-4">
-            <h3 className="text-sm font-black text-foreground uppercase tracking-tight pl-1">
-              Recently Passed Events
-            </h3>
-
-            {passedEvents.length > 0 ? (
-              <div className="space-y-3">
-                {passedEvents.map(event => (
-                  <div 
-                    key={event.id}
-                    className="group rounded-xl border border-border/60 bg-card/40 p-4 space-y-2 opacity-75 hover:opacity-100 transition-all"
-                  >
-                    <div className="flex items-center justify-between border-b border-border/40 pb-1.5 text-[10px]">
-                      <span className="flex items-center gap-1 font-semibold text-muted-foreground">
-                        {event.country === "IN" ? "🇮🇳 IN" : "🇺🇸 US"} • {event.date}
-                      </span>
-                      
-                      <div className="flex text-amber-500">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star 
-                            key={i} 
-                            className={`h-2.5 w-2.5 ${i < event.priority ? "fill-amber-500 text-amber-500" : "text-muted-foreground/30"}`} 
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <h4 className="text-xs font-black text-foreground leading-snug">
-                        {event.title}
-                      </h4>
-                      <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
-                        {event.description}
-                      </p>
-                    </div>
-
-                    <div className="text-[10px] text-muted-foreground pt-1 flex justify-between">
-                      <span>Source: {event.source.split(" / ")[0]}</span>
-                      {isAdmin && (
-                        <button
-                          onClick={() => handleDeleteEvent(event.id)}
-                          className="text-rose-500 hover:underline cursor-pointer"
-                        >
-                          Delete
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-xl border border-dashed border-border/60 p-6 text-center text-xs text-muted-foreground">
-                No historical events logged.
+              <div className="rounded-2xl border border-dashed border-border p-8 text-center bg-card/20 text-xs text-muted-foreground">
+                No upcoming economic calendar dates available.
               </div>
             )}
           </div>

@@ -1,13 +1,58 @@
 [
   {
+    "id": "india-auto-sales-may-2026",
+    "title": "India Auto Sales Wholesales (May Data)",
+    "date": "2026-06-01",
+    "country": "IN",
+    "priority": 3,
+    "source": "Society of Indian Automobile Manufacturers (SIAM) / Economic Times",
+    "description": "Monthly release of wholesale dispatch figures by major Indian automakers. This tracks consumer spending health and auto sector demand trends.",
+    "impact": "Directly impacts Maruti Suzuki, Tata Motors, Mahindra & Mahindra, and two-wheeler stocks.",
+    "result": "Completed. Total domestic wholesales reached a record 4,40,808 units, showing a strong 26% YoY growth. Maruti Suzuki led with 1,90,337 units (+40% YoY). Tata Motors wholesaled 59,090 units (+42.2% YoY). Mahindra & Mahindra wholesaled 58,021 units (+10.7% YoY). SUV and EV demand remains exceptionally high (Tata EV sales up 85% to 10,517 units)."
+  },
+  {
+    "id": "india-gst-collections-may-2026",
+    "title": "GST Collections Announcement (May Data)",
+    "date": "2026-06-01",
+    "country": "IN",
+    "priority": 3,
+    "source": "Ministry of Finance / Economic Times",
+    "description": "Monthly announcement of gross Goods and Services Tax revenue collected. High collections indicate strong economic activity and tax compliance.",
+    "impact": "General sentiment indicator. Positively affects capital goods and infrastructure companies.",
+    "result": "Completed. Gross GST revenue collections reached ₹1,94,184 crore (₹1.94 Lakh Crore), reflecting 3.2% YoY growth. Adjusted for a one-time spectrum-related telecom payment in May 2025, underlying gross collections grew by 9% YoY and net collections grew 10.1% YoY, indicating highly resilient retail consumption."
+  },
+  {
+    "id": "india-gdp-q4-fy26",
+    "title": "India GDP Growth Rate Q4 FY26 Release",
+    "date": "2026-06-05",
+    "country": "IN",
+    "priority": 5,
+    "source": "Ministry of Statistics (MOSPI) / Economic Times",
+    "description": "Quarterly release of India's Gross Domestic Product growth rate for Jan-March 2026 and provisional annual estimates for the full fiscal year FY26.",
+    "impact": "Market-wide mover. Dictates long-term FII flows and national growth outlook.",
+    "result": "Completed. India's Q4 FY26 GDP growth printed at a stellar 7.8%, beating consensus expectations. Provisional annual GDP growth for the full financial year 2025-26 stood at 7.7%. Growth was robustly supported by strong activity in manufacturing, construction, and services."
+  },
+  {
     "id": "rbi-monetary-policy-june-2026",
     "title": "RBI Monetary Policy Meeting Statement (June)",
     "date": "2026-06-05",
     "country": "IN",
     "priority": 5,
     "source": "Reserve Bank of India / Economic Times",
-    "description": "Bi-monthly monetary policy committee announcement regarding repo rates, bank liquidity guidelines, and economic growth forecasts. Dictates interest rate trajectories for home loans and capital costs.",
-    "impact": "Massive volatility expected in banking stocks (Nifty Bank, private & public PSU banks), NBFCs, real estate, and automobile sectors."
+    "description": "Bi-monthly monetary policy committee announcement regarding repo rates, bank liquidity guidelines, and economic growth forecasts.",
+    "impact": "Massive volatility expected in banking stocks (Nifty Bank, private & public PSU banks), NBFCs, real estate, and automobile sectors.",
+    "result": "Completed. Repo rate kept unchanged at 5.25%. The MPC maintained its 'neutral' stance (unanimous vote). However, citing West Asia conflicts and inflation pressures, the RBI lowered its FY27 GDP growth forecast to 6.6% (from 6.9%) and raised its FY27 CPI inflation projection to 5.1% (from 4.6%)."
+  },
+  {
+    "id": "us-nfp-jobs-report-june-2026",
+    "title": "US Non-Farm Payrolls (NFP) Jobs Report",
+    "date": "2026-06-05",
+    "country": "US",
+    "priority": 3,
+    "source": "US Bureau of Labor Statistics / Bloomberg",
+    "description": "Critical monthly report tracking job additions and unemployment rate in the US. Determines US Fed policy tightness.",
+    "impact": "Triggers global capital movements and moves indices (Nifty 50, GIFT Nifty, DXY).",
+    "result": "Completed. The US economy added 172,000 jobs in May, significantly beating the consensus forecast of 85,000. The unemployment rate remained stable at 4.3%. Upward revisions added 93,000 jobs to previous months, highlighting US labor market resilience and reducing near-term Fed rate-cut expectations."
   },
   {
     "id": "us-cpi-inflation-june-2026",
