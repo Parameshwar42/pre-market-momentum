@@ -1,0 +1,62 @@
+[
+  {
+    "id": "rbi-monetary-policy-june-2026",
+    "title": "RBI Monetary Policy Meeting Statement",
+    "date": "2026-06-11",
+    "country": "IN",
+    "priority": 5,
+    "source": "Reserve Bank of India / Economic Times",
+    "description": "Bi-monthly monetary policy committee announcement regarding repo rates, bank liquidity guidelines, and economic growth forecasts. This dictates interest rate trajectories for home loans and capital costs.",
+    "impact": "Massive volatility expected in banking stocks (Nifty Bank, private & public PSU banks), NBFCs, real estate, and automobile sectors."
+  },
+  {
+    "id": "us-cpi-inflation-june-2026",
+    "title": "US CPI Inflation Data Release",
+    "date": "2026-06-12",
+    "country": "US",
+    "priority": 4,
+    "source": "US Bureau of Labor Statistics / Moneycontrol",
+    "description": "Consumer Price Index measures the rate of price changes in the United States. High inflation reduces the likelihood of Fed rate cuts, driving FII capital outflows from emerging markets like India.",
+    "impact": "Direct impact on the US Dollar Index (DXY), gold spot prices, and FII flows in the Nifty 50."
+  },
+  {
+    "id": "india-inflation-and-iip-june-2026",
+    "title": "India CPI Inflation & IIP Data",
+    "date": "2026-06-12",
+    "country": "IN",
+    "priority": 3,
+    "source": "Ministry of Statistics (MOSPI) / Economic Times",
+    "description": "India's domestic consumer price index (CPI) and Index of Industrial Production (IIP) showing manufacturing and services growth rates. High inflation cuts expectations of domestic interest rate reductions.",
+    "impact": "Affects domestic bond yields, Nifty IT, and FMCG sectors sensitive to rural demand."
+  },
+  {
+    "id": "southwest-monsoon-arrival-tracker",
+    "title": "Southwest Monsoon Progression Tracker",
+    "date": "2026-06-15",
+    "country": "IN",
+    "priority": 4,
+    "source": "India Meteorological Department (IMD)",
+    "description": "Tracking the spread of the annual monsoon rains across Central and Northern India. Crucial for rural sowing, agricultural yield expectations, and rural consumer demand.",
+    "impact": "Directly moves fertilizer, agricultural equipment, chemical, and rural consumer discretionary (FMCG) stocks."
+  },
+  {
+    "id": "fed-interest-rate-decision-june-2026",
+    "title": "US Federal Reserve FOMC Interest Rate Decision",
+    "date": "2026-06-17",
+    "country": "US",
+    "priority": 5,
+    "source": "US Federal Reserve / Bloomberg",
+    "description": "Federal Open Market Committee announcement of benchmark US interest rates. A hawkish stance (keeping rates high) strengthens the US dollar and triggers foreign money outflows from India's stock market.",
+    "impact": "Global market mover. Directly impacts GIFT Nifty, domestic Nifty 50, INR/USD currency, and global gold bullion."
+  },
+  {
+    "id": "india-gst-collections-july-2026",
+    "title": "GST Collections Announcement (June Data)",
+    "date": "2026-07-01",
+    "country": "IN",
+    "priority": 3,
+    "source": "Ministry of Finance / Economic Times",
+    "description": "Monthly report on total Goods and Services Tax (GST) revenue collections in India. High collections confirm robust domestic economic growth and strong retail consumption trends.",
+    "impact": "General market sentiment indicator. High GST collections support capital goods and infrastructure sectors."
+  }
+]

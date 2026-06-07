@@ -63,6 +63,11 @@ export default function Footer() {
                   Daily Market Notes
                 </Link>
               </li>
+              <li>
+                <Link href="/events" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Events Calendar
+                </Link>
+              </li>
             </ul>
           </div>
 

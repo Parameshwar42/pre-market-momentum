@@ -31,6 +31,7 @@ export default function Header() {
     { label: "Commodities", path: "/commodities" },
     { label: "ADR Watchlist", path: "/adr" },
     { label: "Daily Notes", path: "/notes" },
+    { label: "Events Calendar", path: "/events" },
     { label: "About", path: "/about" },
   ];
 
