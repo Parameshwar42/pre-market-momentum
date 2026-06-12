@@ -68,15 +68,19 @@ function extractFiiDiiCues(articles: any[]): string {
   for (const art of articles) {
     const text = (art.title + " " + art.summary).toLowerCase();
     if (text.includes("fii") || text.includes("dii") || text.includes("foreign institutional") || text.includes("domestic institutional") || text.includes("net buyers") || text.includes("net sellers")) {
-      cues.push(art.title.trim());
-      if (cues.length >= 2) break;
+      let title = art.title.trim();
+      if (title.length > 85) {
+        title = title.substring(0, 82) + "...";
+      }
+      cues.push(`• ${title}`);
+      if (cues.length >= 1) break;
     }
   }
   
   if (cues.length > 0) {
-    return cues.map(c => `• ${c}`).join("\n");
+    return cues.join("\n");
   }
-  return "• Institutional flows remain selective. FIIs and DIIs continue sector-specific rotation.";
+  return "• Institutional flows remain selective. Watch for exchange tables at open.";
 }
 
 export async function GET(request: Request) {
@@ -164,13 +168,16 @@ export async function GET(request: Request) {
         });
         
         if (matches.length > 0) {
-          const bullet = matches.slice(0, 2).map((m: any) => `  • ${m.title}`).join("\n");
-          sectorBriefs.push(`📁 *${sec.name}*:\n${bullet}`);
+          let title = matches[0].title.trim();
+          if (title.length > 85) {
+            title = title.substring(0, 82) + "...";
+          }
+          sectorBriefs.push(`📁 *${sec.name}*: ${title}`);
         } else {
-          sectorBriefs.push(`📁 *${sec.name}*:\n  • No major updates. Sector remains steady.`);
+          sectorBriefs.push(`📁 *${sec.name}*: Steady. No major updates.`);
         }
       }
-      const sectorUpdatesText = sectorBriefs.join("\n\n");
+      const sectorUpdatesText = sectorBriefs.join("\n");
 
       let dailyBias = "Neutral ⚖️";
       let strategyAdvice = "";
