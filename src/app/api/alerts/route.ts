@@ -79,7 +79,7 @@ export async function GET(request: Request) {
 
     // 1. Handle Instant Test Message Trigger
     if (isTest) {
-      const testBody = `🚨 *NIFTY 50 ALERTS - TEST* 🚨\n\nCongratulation! Your automated WhatsApp market alerts from *Pre-Market Pulse* are now successfully connected and active!`;
+      const testBody = `🚨 *MARKET ALERTS - TEST* 🚨\n\nCongratulation! Your automated WhatsApp market alerts from *Pre-Market Pulse* are now successfully connected and active!`;
       
       const sendResult = await sendWhatsAppMessage(client, testBody, fromNumber, toNumber);
 
@@ -104,7 +104,6 @@ export async function GET(request: Request) {
     if (!market.success) throw new Error(market.error || "Failed to fetch market data");
 
     const INDEX_CONFIGS = [
-      { symbol: "NIFTY50", name: "NIFTY 50", thresholds: [100, 150, 200, 250, 300, 350] },
       { symbol: "BANKNIFTY", name: "BANK NIFTY", thresholds: [150, 300, 450, 600, 750, 900, 1050, 1200] },
       { symbol: "SENSEX", name: "SENSEX", thresholds: [150, 300, 450, 600, 750, 900, 1050, 1200] }
     ];
@@ -162,7 +161,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: true,
       alertSent: false,
-      message: "Checked NIFTY 50, BANK NIFTY, and SENSEX. No new milestones crossed.",
+      message: "Checked BANK NIFTY and SENSEX. No new milestones crossed.",
     });
   } catch (err: any) {
     console.error("Alert trigger error:", err);
