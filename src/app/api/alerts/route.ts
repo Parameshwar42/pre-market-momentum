@@ -8,6 +8,61 @@ const toNumber = process.env.TWILIO_TO_NUMBER;
 
 const triggeredThresholds = new Set<string>();
 
+function formatWhatsAppNumber(phone: string): string {
+  const trimmed = phone.trim();
+  if (trimmed.startsWith("whatsapp:")) {
+    return trimmed;
+  }
+  // Remove spaces, hyphens, and parentheses
+  const cleanNumber = trimmed.replace(/[\s\-()]/g, "");
+  // Ensure country code prefix begins with +
+  const baseNumber = cleanNumber.startsWith("+") ? cleanNumber : `+${cleanNumber}`;
+  return `whatsapp:${baseNumber}`;
+}
+
+function maskNumber(num: string): string {
+  return num.replace(/^(whatsapp:\+?\d{2,4})\d+(\d{4})$/, "$1*****$2");
+}
+
+async function sendWhatsAppMessage(
+  client: any,
+  body: string,
+  from: string,
+  to: string
+) {
+  const formattedFrom = formatWhatsAppNumber(from);
+  const formattedTo = formatWhatsAppNumber(to);
+
+  console.log(`[Twilio] Attempting to send WhatsApp from ${maskNumber(formattedFrom)} to ${maskNumber(formattedTo)}`);
+
+  try {
+    const message = await client.messages.create({
+      body,
+      from: formattedFrom,
+      to: formattedTo,
+    });
+    console.log(`[Twilio] Message sent successfully. SID: ${message.sid}`);
+    return { success: true, sid: message.sid };
+  } catch (err: any) {
+    console.error(`[Twilio] Error sending message: Code ${err.code} | ${err.message}`);
+    
+    let helperMessage = "Twilio failed to send the WhatsApp message.";
+    if (err.code === 63012) {
+      helperMessage += " Error 63012: Outside 24-hour window or template violation. If using a Twilio Sandbox, the recipient number must first opt-in by sending a message (e.g. 'join <sandbox-keyword>') to your Twilio number via WhatsApp.";
+    } else if (err.code === 21608) {
+      helperMessage += " Error 21608: The recipient number is not verified. If using a Twilio Trial Account, you must verify the 'To' number in your Twilio Console under 'Verified Caller IDs' first.";
+    } else if (err.code === 21211) {
+      helperMessage += " Error 21211: Invalid 'To' phone number. Please check if TWILIO_TO_NUMBER is correct and contains the country code prefix (e.g., +91 for India).";
+    } else if (err.code === 21610) {
+      helperMessage += " Error 21610: Recipient is blacklisted or unsubscribed. Send 'START' to the Twilio number via WhatsApp to opt-in again.";
+    } else {
+      helperMessage += ` Twilio Error Code ${err.code || "unknown"}: ${err.message}`;
+    }
+
+    throw new Error(helperMessage);
+  }
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -26,11 +81,7 @@ export async function GET(request: Request) {
     if (isTest) {
       const testBody = `🚨 *NIFTY 50 ALERTS - TEST* 🚨\n\nCongratulation! Your automated WhatsApp market alerts from *Pre-Market Pulse* are now successfully connected and active!`;
       
-      await client.messages.create({
-        body: testBody,
-        from: fromNumber,
-        to: toNumber,
-      });
+      await sendWhatsAppMessage(client, testBody, fromNumber, toNumber);
 
       return NextResponse.json({
         success: true,
@@ -81,11 +132,7 @@ export async function GET(request: Request) {
           
           const bodyText = `🚨 *${cfg.name} MILESTONE ALERT* 🚨\n\n${cfg.name} has ${trendWord} today! It is ${isUp ? "up" : "down"} by *${sign}${absChange.toFixed(2)} points*.\n\n• Current Price: *₹${indexData.price.toLocaleString("en-IN")}*\n• Change: *${indexData.changePercent >= 0 ? "+" : ""}${indexData.changePercent}%* (${indexData.change.toFixed(2)} pts)\n• Today's Open: ₹${indexData.open.toLocaleString("en-IN")}\n• Milestone Crossed: *${sign}${crossedThreshold} points* ${icon}`;
 
-          await client.messages.create({
-            body: bodyText,
-            from: fromNumber,
-            to: toNumber,
-          });
+          await sendWhatsAppMessage(client, bodyText, fromNumber, toNumber);
 
           triggeredThresholds.add(cacheKey);
           alertsSentList.push({
@@ -119,3 +166,4 @@ export async function GET(request: Request) {
     );
   }
 }
+

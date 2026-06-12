@@ -44,7 +44,7 @@ export default function DailyNotes() {
 
   // Load notes from localStorage + fallback to static JSON
   useEffect(() => {
-    const savedNotes = localStorage.getItem("premarket_daily_notes");
+    const savedNotes = localStorage.getItem("premarket_daily_notes_v2");
     if (savedNotes) {
       try {
         setNotes(JSON.parse(savedNotes));
@@ -53,7 +53,7 @@ export default function DailyNotes() {
       }
     } else {
       setNotes(initialNotes as Note[]);
-      localStorage.setItem("premarket_daily_notes", JSON.stringify(initialNotes));
+      localStorage.setItem("premarket_daily_notes_v2", JSON.stringify(initialNotes));
     }
 
     // Check if admin mode is active in URL query string (e.g. ?admin=true)
@@ -85,7 +85,7 @@ export default function DailyNotes() {
 
     const updatedNotes = [newNote, ...notes];
     setNotes(updatedNotes);
-    localStorage.setItem("premarket_daily_notes", JSON.stringify(updatedNotes));
+    localStorage.setItem("premarket_daily_notes_v2", JSON.stringify(updatedNotes));
 
     // Reset form
     setFormTitle("");
@@ -100,7 +100,7 @@ export default function DailyNotes() {
     if (confirm("Are you sure you want to delete this note from local storage?")) {
       const updatedNotes = notes.filter(n => n.id !== id);
       setNotes(updatedNotes);
-      localStorage.setItem("premarket_daily_notes", JSON.stringify(updatedNotes));
+      localStorage.setItem("premarket_daily_notes_v2", JSON.stringify(updatedNotes));
       if (selectedNote?.id === id) {
         setSelectedNote(null);
       }
