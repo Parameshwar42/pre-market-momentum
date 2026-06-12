@@ -81,11 +81,17 @@ export async function GET(request: Request) {
     if (isTest) {
       const testBody = `🚨 *NIFTY 50 ALERTS - TEST* 🚨\n\nCongratulation! Your automated WhatsApp market alerts from *Pre-Market Pulse* are now successfully connected and active!`;
       
-      await sendWhatsAppMessage(client, testBody, fromNumber, toNumber);
+      const sendResult = await sendWhatsAppMessage(client, testBody, fromNumber, toNumber);
 
       return NextResponse.json({
         success: true,
         message: "Test WhatsApp message sent successfully to your phone number!",
+        debug: {
+          version: "1.0.2",
+          from: maskNumber(formatWhatsAppNumber(fromNumber)),
+          to: maskNumber(formatWhatsAppNumber(toNumber)),
+          sid: sendResult.sid
+        }
       });
     }
 
