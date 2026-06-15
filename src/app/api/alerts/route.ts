@@ -110,14 +110,16 @@ export async function GET(request: Request) {
 
       const { origin } = new URL(request.url);
       
-      // Fetch live market data
-      const marketRes = await fetch(`${origin}/api/market?t=${Date.now()}`, { cache: "no-store" });
+      // Fetch live market and news data in parallel to prevent Vercel timeouts
+      const [marketRes, newsRes] = await Promise.all([
+        fetch(`${origin}/api/market?t=${Date.now()}`, { cache: "no-store" }),
+        fetch(`${origin}/api/news?t=${Date.now()}`, { cache: "no-store" })
+      ]);
+
       if (!marketRes.ok) throw new Error(`Market API returned status ${marketRes.status}`);
       const marketData = await marketRes.json();
       if (!marketData.success) throw new Error(marketData.error || "Failed to fetch market data");
 
-      // Fetch live news data
-      const newsRes = await fetch(`${origin}/api/news?t=${Date.now()}`, { cache: "no-store" });
       if (!newsRes.ok) throw new Error(`News API returned status ${newsRes.status}`);
       const newsData = await newsRes.json();
       if (!newsData.success) throw new Error(newsData.error || "Failed to fetch news data");
