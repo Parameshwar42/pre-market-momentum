@@ -3,6 +3,10 @@
     {
       "path": "/api/alerts?cron=9am",
       "schedule": "30 3 * * *"
+    },
+    {
+      "path": "/api/alerts",
+      "schedule": "*/30 3-10 * * 1-5"
     }
   ]
 }

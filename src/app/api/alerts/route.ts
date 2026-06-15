@@ -232,6 +232,13 @@ export async function GET(request: Request) {
     }
 
     // 3. Regular price milestone check logic
+    if (!isCron && !isTest) {
+      return NextResponse.json({
+        success: false,
+        message: "Unauthorized. Milestone check requires Vercel execution or manual test query parameter.",
+      }, { status: 401 });
+    }
+
     const { origin } = new URL(request.url);
     const res = await fetch(`${origin}/api/market?t=${Date.now()}`, { cache: "no-store" });
     if (!res.ok) throw new Error(`Market API returned status ${res.status}`);
