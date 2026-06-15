@@ -425,11 +425,38 @@ export default function MarketCalendar() {
                 "@type": "Event",
                 "name": e.title,
                 "startDate": e.date,
+                "endDate": e.date,
+                "eventStatus": "https://schema.org/EventScheduled",
+                "image": [
+                  "https://premarketmomentum.com/og_preview.png"
+                ],
                 "location": {
                   "@type": "Place",
-                  "name": e.country === "IN" ? "India" : "United States"
+                  "name": e.country === "IN" ? "Reserve Bank of India" : "Federal Reserve Board",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": e.country === "IN" ? "Mumbai" : "Washington D.C.",
+                    "addressRegion": e.country === "IN" ? "MH" : "DC",
+                    "addressCountry": e.country === "IN" ? "IN" : "US"
+                  }
                 },
-                "description": e.description
+                "description": e.description,
+                "performer": {
+                  "@type": "Organization",
+                  "name": e.source || (e.country === "IN" ? "Government of India" : "US Government")
+                },
+                "organizer": {
+                  "@type": "Organization",
+                  "name": e.source || (e.country === "IN" ? "Government of India" : "US Government"),
+                  "url": e.sourceUrl || "https://premarketmomentum.com/events"
+                },
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": e.country === "IN" ? "INR" : "USD",
+                  "availability": "https://schema.org/InStock",
+                  "url": "https://premarketmomentum.com/events"
+                }
               }))
             })
           }}
