@@ -11,6 +11,7 @@ import {
   ArrowUpRight, 
   ArrowDownRight,
   Filter,
+  CheckCircle2,
   RefreshCw
 } from "lucide-react";
 
@@ -373,14 +374,21 @@ export default function NewsMarketAlerts() {
 
                 <div className="mt-3 flex items-center justify-between text-[10px] text-muted-foreground font-semibold">
                   <span>Source: {article.source}</span>
-                  <a 
-                    href="https://www.effectivecpmnetwork.com/aqsjhqbx?key=08538700f7b4c3d019ee7c708955b104" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="inline-flex items-center gap-0.5 text-indigo-500 hover:text-indigo-400 hover:underline font-bold transition-all"
-                  >
-                    Read full article ↗
-                  </a>
+                  {article.link ? (
+                    <a 
+                      href={article.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="inline-flex items-center gap-0.5 text-indigo-500 hover:text-indigo-400 hover:underline font-bold transition-all"
+                    >
+                      Read full article ↗
+                    </a>
+                  ) : (
+                    <span className="flex items-center gap-1">
+                      <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                      Verified Feed
+                    </span>
+                  )}
                 </div>
               </div>
             );

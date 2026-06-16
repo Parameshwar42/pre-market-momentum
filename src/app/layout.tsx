@@ -64,6 +64,11 @@ export default function RootLayout({
           async
           src="https://pl29761109.effectivecpmnetwork.com/81/16/b1/8116b19108347c0f29020a460482d266.js"
         />
+        {/* Adsterra Script */}
+        <script
+          async
+          src="https://pl29761112.effectivecpmnetwork.com/9d/19/00/9d1900fe787a3c4878bf76e9f5d6c48b.js"
+        />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-200">
         <ThemeProvider>
