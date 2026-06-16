@@ -106,6 +106,14 @@ export default function RootLayout({
               src="https://pl29761109.effectivecpmnetwork.com/81/16/b1/8116b19108347c0f29020a460482d266.js"
               strategy="afterInteractive"
             />
+
+            {/* Adsterra Social Bar / Widget */}
+            <div id="container-90b7bb4deb894696f1631cdb992d166f" />
+            <Script
+              src="https://pl29761110.effectivecpmnetwork.com/90b7bb4deb894696f1631cdb992d166f/invoke.js"
+              data-cfasync="false"
+              strategy="afterInteractive"
+            />
           </WatchlistProvider>
         </ThemeProvider>
       </body>
