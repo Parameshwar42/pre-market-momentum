@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getNewsAlerts, NewsItem } from "@/services/api";
+import { getNewsAlerts, NewsItem, getStaticNews } from "@/services/api";
 import { 
   Newspaper, 
   Search, 
@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 
 export default function NewsMarketAlerts() {
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [news, setNews] = useState<NewsItem[]>(getStaticNews());
+  const [loading, setLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeSource, setActiveSource] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");

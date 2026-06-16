@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { getMarketData, MarketItem } from "@/services/api";
+import { getMarketData, MarketItem, getStaticMarketData } from "@/services/api";
 import { useWatchlist } from "@/components/WatchlistContext";
 import MarketCard from "@/components/MarketCard";
 import { 
@@ -23,8 +23,8 @@ function LiveMarketUpdatesContent() {
   const searchParams = useSearchParams();
   const { watchlist } = useWatchlist();
 
-  const [marketItems, setMarketItems] = useState<MarketItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [marketItems, setMarketItems] = useState<MarketItem[]>(getStaticMarketData());
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>("all");
   const [countdown, setCountdown] = useState(30);

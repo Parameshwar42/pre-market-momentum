@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getMarketData, calculatePreMarketSignal, MarketItem } from "@/services/api";
+import { getMarketData, calculatePreMarketSignal, MarketItem, getStaticMarketData } from "@/services/api";
 import { useWatchlist } from "@/components/WatchlistContext";
 import PreMarketSignal from "@/components/PreMarketSignal";
 import SentimentIndicator from "@/components/SentimentIndicator";
@@ -22,8 +22,8 @@ import Link from "next/link";
 
 export default function HomeDashboard() {
   const { watchlist } = useWatchlist();
-  const [marketItems, setMarketItems] = useState<MarketItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [marketItems, setMarketItems] = useState<MarketItem[]>(getStaticMarketData());
+  const [loading, setLoading] = useState(false);
   const [refreshInterval, setRefreshInterval] = useState<number>(30); // in seconds
   const [countdown, setCountdown] = useState<number>(30);
   const [isRefreshing, setIsRefreshing] = useState(false);

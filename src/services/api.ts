@@ -1014,3 +1014,11 @@ export async function getNewsAlerts(category?: string): Promise<NewsItem[]> {
   }
   return MOCK_NEWS.filter((n) => n.category === category);
 }
+
+export function getStaticMarketData(): MarketItem[] {
+  return activeMarketData;
+}
+
+export function getStaticNews(): NewsItem[] {
+  return MOCK_NEWS;
+}

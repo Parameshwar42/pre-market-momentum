@@ -29,8 +29,8 @@ interface Note {
 }
 
 export default function DailyNotes() {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+  const [notes, setNotes] = useState<Note[]>(initialNotes as Note[]);
+  const [selectedNote, setSelectedNote] = useState<Note | null>((initialNotes[0] as Note) || null);
   const [isPublishing, setIsPublishing] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);

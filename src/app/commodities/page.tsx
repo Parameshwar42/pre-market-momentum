@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getMarketData, MarketItem } from "@/services/api";
+import { getMarketData, MarketItem, getStaticMarketData } from "@/services/api";
 import { useWatchlist } from "@/components/WatchlistContext";
 import InteractiveChart from "@/components/InteractiveChart";
 import { 
@@ -16,8 +16,8 @@ import {
 
 export default function CommoditiesPanel() {
   const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
-  const [marketItems, setMarketItems] = useState<MarketItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [marketItems, setMarketItems] = useState<MarketItem[]>(getStaticMarketData());
+  const [loading, setLoading] = useState(false);
   const [selectedSymbol, setSelectedSymbol] = useState<string>("GOLD");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [countdown, setCountdown] = useState(30);

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getMarketData, MarketItem } from "@/services/api";
+import { getMarketData, MarketItem, getStaticMarketData } from "@/services/api";
 import { useWatchlist } from "@/components/WatchlistContext";
 import MarketCard from "@/components/MarketCard";
 import { 
@@ -28,8 +28,8 @@ interface ADRDetails {
 
 export default function ADRWatchlist() {
   const { watchlist } = useWatchlist();
-  const [marketItems, setMarketItems] = useState<MarketItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [marketItems, setMarketItems] = useState<MarketItem[]>(getStaticMarketData());
+  const [loading, setLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [countdown, setCountdown] = useState(30);
 
