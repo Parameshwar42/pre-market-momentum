@@ -80,22 +80,33 @@ export default function RootLayout({
             <div className="w-full flex justify-center py-2 bg-card border-b border-border/50 overflow-hidden">
               <div className="flex items-center justify-center max-w-full overflow-x-auto scrollbar-none">
                 <div className="w-[468px] h-[60px] shrink-0 relative">
-                  <script
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                        atOptions = {
-                          'key' : 'da564d73770000dec96e582f91d165e2',
-                          'format' : 'iframe',
-                          'height' : 60,
-                          'width' : 468,
-                          'params' : {}
-                        };
-                      `
-                    }}
-                  />
-                  <script
-                    async
-                    src="https://www.highperformanceformat.com/da564d73770000dec96e582f91d165e2/invoke.js"
+                  <iframe
+                    srcDoc={`
+                      <!DOCTYPE html>
+                      <html>
+                        <head>
+                          <style>
+                            body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+                          </style>
+                        </head>
+                        <body>
+                          <script type="text/javascript">
+                            atOptions = {
+                              'key' : 'da564d73770000dec96e582f91d165e2',
+                              'format' : 'iframe',
+                              'height' : 60,
+                              'width' : 468,
+                              'params' : {}
+                            };
+                          </script>
+                          <script type="text/javascript" src="https://www.highperformanceformat.com/da564d73770000dec96e582f91d165e2/invoke.js"></script>
+                        </body>
+                      </html>
+                    `}
+                    width="468"
+                    height="60"
+                    style={{ border: 'none', overflow: 'hidden' }}
+                    scrolling="no"
                   />
                 </div>
               </div>
