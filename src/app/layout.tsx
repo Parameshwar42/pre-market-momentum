@@ -75,6 +75,32 @@ export default function RootLayout({
           <WatchlistProvider>
             <MarketTicker />
             <Header />
+            
+            {/* Adsterra 468x60 Banner */}
+            <div className="w-full flex justify-center py-2 bg-card border-b border-border/50 overflow-hidden">
+              <div className="flex items-center justify-center max-w-full overflow-x-auto scrollbar-none">
+                <div className="w-[468px] h-[60px] shrink-0 relative">
+                  <script
+                    dangerouslySetInnerHTML={{
+                      __html: `
+                        atOptions = {
+                          'key' : 'da564d73770000dec96e582f91d165e2',
+                          'format' : 'iframe',
+                          'height' : 60,
+                          'width' : 468,
+                          'params' : {}
+                        };
+                      `
+                    }}
+                  />
+                  <script
+                    async
+                    src="https://www.highperformanceformat.com/da564d73770000dec96e582f91d165e2/invoke.js"
+                  />
+                </div>
+              </div>
+            </div>
+
             <main className="flex-1 flex flex-col max-w-full overflow-x-hidden">
               {children}
             </main>
