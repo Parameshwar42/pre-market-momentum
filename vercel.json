@@ -3,10 +3,6 @@
     {
       "path": "/api/alerts/briefing",
       "schedule": "30 3 * * *"
-    },
-    {
-      "path": "/api/alerts/milestones",
-      "schedule": "*/30 3-10 * * 1-5"
     }
   ]
 }
