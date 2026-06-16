@@ -100,6 +100,12 @@ export default function RootLayout({
                 });
               `}
             </Script>
+
+            {/* Adsterra Popunder */}
+            <Script
+              src="https://pl29761109.effectivecpmnetwork.com/81/16/b1/8116b19108347c0f29020a460482d266.js"
+              strategy="afterInteractive"
+            />
           </WatchlistProvider>
         </ThemeProvider>
       </body>
