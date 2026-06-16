@@ -144,6 +144,38 @@ export default function RootLayout({
               data-cfasync="false"
               src="https://pl29761110.effectivecpmnetwork.com/90b7bb4deb894696f1631cdb992d166f/invoke.js"
             />
+
+            {/* Adsterra 160x600 Wide Skyscraper Banner - Right Gutter */}
+            <div className="hidden min-[1620px]:block fixed right-4 top-[150px] z-30 w-[160px] h-[600px]">
+              <iframe
+                srcDoc={`
+                  <!DOCTYPE html>
+                  <html>
+                    <head>
+                      <style>
+                        body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+                      </style>
+                    </head>
+                    <body>
+                      <script type="text/javascript">
+                        atOptions = {
+                          'key' : '59a2f33c485cd1729c34188ac2010c3e',
+                          'format' : 'iframe',
+                          'height' : 600,
+                          'width' : 160,
+                          'params' : {}
+                        };
+                      </script>
+                      <script type="text/javascript" src="https://www.highperformanceformat.com/59a2f33c485cd1729c34188ac2010c3e/invoke.js"></script>
+                    </body>
+                  </html>
+                `}
+                width="160"
+                height="600"
+                style={{ border: 'none', overflow: 'hidden' }}
+                scrolling="no"
+              />
+            </div>
           </WatchlistProvider>
         </ThemeProvider>
       </body>
