@@ -307,8 +307,32 @@ export default function HomeDashboard() {
         <div className="lg:col-span-8">
           <PreMarketSignal signalData={signalData} />
         </div>
-        <div className="lg:col-span-4">
+        <div className="lg:col-span-4 flex flex-col gap-6">
           <SentimentIndicator marketItems={marketItems} />
+          
+          {/* Adsterra 160x300 Skyscraper Banner */}
+          <div className="bg-card border border-border/70 rounded-3xl p-6 flex flex-col items-center justify-center overflow-hidden shadow-sm">
+            <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider mb-3 block">Sponsored Link</span>
+            <div className="w-[160px] h-[300px] shrink-0 relative">
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
+                    atOptions = {
+                      'key' : 'cbe27a7676cac475c0ee7254fc828972',
+                      'format' : 'iframe',
+                      'height' : 300,
+                      'width' : 160,
+                      'params' : {}
+                    };
+                  `
+                }}
+              />
+              <script
+                async
+                src="https://www.highperformanceformat.com/cbe27a7676cac475c0ee7254fc828972/invoke.js"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
