@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+let cachedMarketData: any = null;
+let lastCacheTime = 0;
+const CACHE_DURATION_MS = 15000; // 15 seconds
+
 const YAHOO_SYMBOLS: Record<string, string> = {
   NIFTY50: "^NSEI",
   BANKNIFTY: "^NSEBANK",
@@ -59,6 +63,14 @@ interface YahooResponse {
 
 export async function GET() {
   try {
+    const now = Date.now();
+    if (cachedMarketData && (now - lastCacheTime < CACHE_DURATION_MS)) {
+      return NextResponse.json({
+        success: true,
+        data: cachedMarketData,
+        source: "yahoo-finance-cached",
+      });
+    }
     const rawFetches = await Promise.all(
       Object.entries(YAHOO_SYMBOLS).map(async ([dashSymbol, yahooSymbol]) => {
         try {
@@ -348,6 +360,9 @@ export async function GET() {
         parsedDataMap[cfg.sym] = item;
       }
     });
+
+    cachedMarketData = validResults;
+    lastCacheTime = Date.now();
 
     return NextResponse.json({
       success: true,
