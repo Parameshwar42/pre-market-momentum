@@ -70,7 +70,7 @@ export default function RootLayout({
           src="https://pl29761112.effectivecpmnetwork.com/9d/19/00/9d1900fe787a3c4878bf76e9f5d6c48b.js"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-200">
+      <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-200 pb-[60px] md:pb-0">
         <ThemeProvider>
           <WatchlistProvider>
             <MarketTicker />
@@ -175,6 +175,40 @@ export default function RootLayout({
                 style={{ border: 'none', overflow: 'hidden' }}
                 scrolling="no"
               />
+            </div>
+
+            {/* Sticky Mobile Footer Banner (320x50) - Visible only on screens smaller than 768px */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-t border-border/60 py-1 flex justify-center shadow-lg">
+              <div className="w-[320px] h-[50px] shrink-0 relative">
+                <iframe
+                  srcDoc={`
+                    <!DOCTYPE html>
+                    <html>
+                      <head>
+                        <style>
+                          body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+                        </style>
+                      </head>
+                      <body>
+                        <script type="text/javascript">
+                          atOptions = {
+                            'key' : '051da1b93fbac39590ccf417fa6540dd',
+                            'format' : 'iframe',
+                            'height' : 50,
+                            'width' : 320,
+                            'params' : {}
+                          };
+                        </script>
+                        <script type="text/javascript" src="https://www.highperformanceformat.com/051da1b93fbac39590ccf417fa6540dd/invoke.js"></script>
+                      </body>
+                    </html>
+                  `}
+                  width="320"
+                  height="50"
+                  style={{ border: 'none', overflow: 'hidden' }}
+                  scrolling="no"
+                />
+              </div>
             </div>
           </WatchlistProvider>
         </ThemeProvider>
