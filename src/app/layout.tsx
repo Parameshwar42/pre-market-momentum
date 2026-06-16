@@ -115,6 +115,41 @@ export default function RootLayout({
             <main className="flex-1 flex flex-col max-w-full overflow-x-hidden">
               {children}
             </main>
+
+            {/* Adsterra 728x90 Leaderboard Banner - Above Footer */}
+            <div className="hidden md:flex w-full justify-center py-4 bg-card border-t border-border/50 overflow-hidden">
+              <div className="w-[728px] h-[90px] shrink-0 relative">
+                <iframe
+                  srcDoc={`
+                    <!DOCTYPE html>
+                    <html>
+                      <head>
+                        <style>
+                          body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+                        </style>
+                      </head>
+                      <body>
+                        <script type="text/javascript">
+                          atOptions = {
+                            'key' : '57bd6da1e38802329ef2b7ba387bb10d',
+                            'format' : 'iframe',
+                            'height' : 90,
+                            'width' : 728,
+                            'params' : {}
+                          };
+                        </script>
+                        <script type="text/javascript" src="https://www.highperformanceformat.com/57bd6da1e38802329ef2b7ba387bb10d/invoke.js"></script>
+                      </body>
+                    </html>
+                  `}
+                  width="728"
+                  height="90"
+                  style={{ border: 'none', overflow: 'hidden' }}
+                  scrolling="no"
+                />
+              </div>
+            </div>
+
             <Footer />
             <Analytics />
             <CookieConsent />
