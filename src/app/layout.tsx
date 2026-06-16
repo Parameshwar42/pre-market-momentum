@@ -70,6 +70,11 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4399943882344598"
           crossOrigin="anonymous"
         />
+        {/* Adsterra Popunder */}
+        <script
+          async
+          src="https://pl29761109.effectivecpmnetwork.com/81/16/b1/8116b19108347c0f29020a460482d266.js"
+        />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-200">
         <ThemeProvider>
@@ -101,18 +106,12 @@ export default function RootLayout({
               `}
             </Script>
 
-            {/* Adsterra Popunder */}
-            <Script
-              src="https://pl29761109.effectivecpmnetwork.com/81/16/b1/8116b19108347c0f29020a460482d266.js"
-              strategy="afterInteractive"
-            />
-
             {/* Adsterra Social Bar / Widget */}
             <div id="container-90b7bb4deb894696f1631cdb992d166f" />
-            <Script
-              src="https://pl29761110.effectivecpmnetwork.com/90b7bb4deb894696f1631cdb992d166f/invoke.js"
+            <script
+              async
               data-cfasync="false"
-              strategy="afterInteractive"
+              src="https://pl29761110.effectivecpmnetwork.com/90b7bb4deb894696f1631cdb992d166f/invoke.js"
             />
           </WatchlistProvider>
         </ThemeProvider>
